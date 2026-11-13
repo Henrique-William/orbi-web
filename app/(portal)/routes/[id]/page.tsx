@@ -38,10 +38,10 @@ export default function RoutePage() {
       r.stops.map((s: any, i: number) => [i + 1, P.stopAddr(s), s.district, s.recipient, s.phone, STOP_STATUS[s.status][0], s.at ? hhmm(s.at) : '', s.reason || '', s.proof ? s.proof.receiver : ''])));
     toast('Planilha CSV gerada', 'download');
   };
-  const del = () => confirmDialog(`Excluir ${r.code}?`, 'A rota e as paradas serão removidas. O motorista deixa de ver esta rota.', 'Excluir', true, async () => {
-    const ok = await P.act.deleteRoute(r.id);
-    if (!P.API) toast('Rota excluída', 'trash');
-    if (ok) router.push('/routes');
+  // volta para a lista antes de excluir (senão a página mostraria "não encontrado" por um instante)
+  const del = () => confirmDialog(`Excluir ${r.code}?`, 'A rota e as paradas serão removidas. O motorista deixa de ver esta rota.', 'Excluir', true, () => {
+    router.push('/routes');
+    P.act.deleteRoute(r.id).then(() => { if (!P.API) toast('Rota excluída', 'trash'); });
   });
   const cancel = () => confirmDialog(`Cancelar ${r.code}?`, 'A rota e as entregas pendentes ficam canceladas. O motorista verá a mudança no app.', 'Cancelar rota', true, () => P.act.cancelRoute(r.id));
 

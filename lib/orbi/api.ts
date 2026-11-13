@@ -24,7 +24,13 @@ export function enableApi(P: any) {
   // -------------------------------------------------------------------------
   // Sessão (token JWT da API; nunca guardamos a senha)
   // -------------------------------------------------------------------------
-  function readSession() { try { const s = JSON.parse(sessionStorage.getItem(TOKEN_KEY) || 'null'); return s && s.exp * 1000 > Date.now() ? s : null; } catch { return null; } }
+  function readSession() {
+    try {
+      const s = JSON.parse(sessionStorage.getItem(TOKEN_KEY) || 'null');
+      if (s && s.exp * 1000 <= Date.now()) { sessionStorage.removeItem(TOKEN_KEY); stopPolling(); P.sessionExpired = true; return null; } // token vencido
+      return s;
+    } catch { return null; }
+  }
   function writeSession(s: any) { try { if (s) sessionStorage.setItem(TOKEN_KEY, JSON.stringify(s)); else sessionStorage.removeItem(TOKEN_KEY); } catch { /* ignora */ } }
   function decodeJwt(t: string) {
     try { let p = t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'); p += '='.repeat((4 - (p.length % 4)) % 4); return JSON.parse(decodeURIComponent(escape(atob(p)))); } catch { return null; }
@@ -163,11 +169,17 @@ export function enableApi(P: any) {
   // -------------------------------------------------------------------------
   // Sincronização periódica (o app grava na API; o portal lê a cada N segundos)
   // -------------------------------------------------------------------------
-  let timer: any = null, busy = false, lastSig = '', polls = 0, muteToasts = false;
+  let timer: any = null, running: Promise<void> | null = null, lastSig = '', polls = 0, muteToasts = false;
   const finishedCache: Record<string, any> = {};
-  P.syncNow = async (force?: boolean) => {
-    if (busy || !readSession()) return;
-    busy = true; setSyncState(P.sync.last ? 'syncing' : 'loading');
+  // uma sincronização por vez; se uma ação pedir dados novos durante outra, espera e roda de novo
+  P.syncNow = async (force?: boolean): Promise<void> => {
+    if (running) { const cur = running; await cur.catch(() => { }); if (!force) return; if (running && running !== cur) return running; }
+    if (!readSession()) return;
+    running = doSync(force);
+    try { await running; } finally { running = null; }
+  };
+  async function doSync(force?: boolean) {
+    setSyncState(P.sync.last ? 'syncing' : 'loading');
     try {
       const routes = await request('GET', '/route');
       let users = null;
@@ -205,8 +217,8 @@ export function enableApi(P: any) {
       setSyncState('ok');
     } catch (e: any) {
       setSyncState(e.status === 401 ? 'idle' : 'error', e.message);
-    } finally { busy = false; }
-  };
+    }
+  }
   function startPolling() {
     stopPolling();
     const tick = () => { P.syncNow(); timer = setTimeout(tick, (document.hidden ? 60 : CONFIG.pollSeconds) * 1000); };
