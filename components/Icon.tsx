@@ -62,12 +62,16 @@ export function Icon({ name, size }: { name: string; size?: 'sm' | 'xs' | 'lg' |
   return <svg className={`ic ${size || ''}`} viewBox="0 0 24 24" aria-hidden="true" dangerouslySetInnerHTML={{ __html: IC[name] || '' }} />;
 }
 
+/**
+ * Logo da Orbi: núcleo, anel orbital e satélite (mesmo desenho do ícone do app, app/icon.svg).
+ * Usa a cor do texto (branco dentro do quadrado azul .brand-logo); o recorte foca o desenho.
+ */
 export function Logo() {
   return (
-    <svg viewBox="0 0 48 48" aria-hidden="true">
-      <circle cx="24" cy="24" r="9" fill="currentColor" />
-      <ellipse cx="24" cy="24" rx="20" ry="8" fill="none" stroke="currentColor" strokeWidth="3" transform="rotate(-25 24 24)" />
-      <circle cx="41.5" cy="15.5" r="3.6" fill="#38BDF8" />
+    <svg viewBox="31 31 46 46" aria-hidden="true">
+      <circle cx="54" cy="54" r="17" fill="none" stroke="currentColor" strokeWidth="4.5" />
+      <circle cx="54" cy="54" r="6.5" fill="currentColor" />
+      <circle cx="67.5" cy="40.5" r="4.5" fill="currentColor" />
     </svg>
   );
 }
