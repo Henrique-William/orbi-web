@@ -38,11 +38,15 @@ function Connection({ P }: { P: any }) {
         <div><span>Servidor</span><b>{CONFIG.apiPublicUrl}</b></div>
         <div><span>Situação</span><b>{state}</b></div>
         <div><span>Última atualização</span><b>{P.sync.last ? `${hhmm(P.sync.last)} (${rel(P.sync.last)})` : '—'}</b></div>
-        <div><span>Frequência</span><b>a cada {CONFIG.pollSeconds} segundos</b></div>
         <div><span>Sessão expira em</span><b>{fmtMin(Math.max(0, P.sessionExpiresIn() / 60))}</b></div>
         <div><span>Dados</span><b>{P.S.routes.length} rotas · {P.S.routes.reduce((a: number, r: any) => a + r.stops.length, 0)} entregas · {P.drivers().length} motoristas</b></div>
       </div>
-      <div className="row end" style={{ marginTop: 12 }}><button className="btn primary" onClick={() => P.syncNow(true).then(() => toast('Dados atualizados', 'check'))}><Icon name="refresh" size="sm" /> Atualizar agora</button></div>
+      <div className="row end" style={{ marginTop: 12 }}><button className="btn primary" onClick={() => P.refresh()}><Icon name="refresh" size="sm" /> Atualizar agora</button></div>
+      <label className="lbl">Atualização automática</label>
+      <div className="seg">{[[0, 'Desligada'], [30, '30 s'], [60, '1 min'], [300, '5 min']].map(([s, l]) => (
+        <button key={s} className={P.autoRefresh() === s ? 'on' : ''} onClick={() => P.setAutoRefresh(s)}>{l}</button>
+      ))}</div>
+      <p className="muted small" style={{ margin: '8px 0 0' }}>Desligada: os dados só são buscados quando você clica em <b>Atualizar</b> (economiza chamadas à API). Cada atualização consulta as rotas e as entregas de cada rota ativa. Nenhuma delas usa a cota do OpenRouteService.</p>
       <div className="callout neutral"><Icon name="info" size="sm" /><span>O portal lê e grava na mesma Orbi API que o app do motorista usa. O plano gratuito do Render “dorme” sem uso; a primeira conexão pode levar até 1 minuto.</span></div>
     </>
   );

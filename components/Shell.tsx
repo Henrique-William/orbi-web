@@ -11,7 +11,7 @@ import { openOccurrences, Empty } from './common';
 import { useOrbi } from '@/lib/orbi/useOrbi';
 import { first, initials, rel, hhmm, esc, ROUTE_STATUS } from '@/lib/orbi/format';
 import { openModal, closeModal, setTheme, toast } from '@/lib/orbi/ui';
-import { CONFIG, leaveDemo } from '@/lib/orbi/config';
+import { leaveDemo } from '@/lib/orbi/config';
 import { newDriverModal } from './modals';
 
 export const NAV: [string, string, string, string][] = [
@@ -104,6 +104,7 @@ export default function PageFrame({ active, title, sub, path, actions, noHead, c
           </div>
           <button className="search-btn" aria-label="Buscar" onClick={() => palette(P, router)}><Icon name="search" size="sm" /><span>Buscar rotas, motoristas…</span><kbd>Ctrl K</kbd></button>
           <SyncPill P={P} />
+          {P.API && <RefreshButton P={P} />}
           <span className="top-sep only-d" />
           <button className="icon-btn" aria-label="Alternar tema" onClick={() => { setTheme(dark ? 'light' : 'dark'); P.emit(); }}><Icon name={dark ? 'sun' : 'moon'} /></button>
           <button className="icon-btn" aria-label="Notificações" onClick={e => openPop('notif', e.currentTarget)}><Icon name="bell" />{unreadN ? <span className="dot">{unreadN}</span> : null}</button>
@@ -184,10 +185,18 @@ function SyncPill({ P }: { P: any }) {
   const flashing = P.sync.flash;
   if (!P.API) return <span className="sync-pill" data-tip="<b>Modo demonstração</b><div>Dados locais deste navegador</div>"><i /><span>Demonstração</span></span>;
   const st = P.sync.state;
-  const label = flashing ? 'Atualizado agora' : st === 'waking' ? 'Acordando servidor…' : st === 'error' ? 'Sem conexão' : st === 'loading' ? 'Conectando…' : 'Sincronizado';
+  const auto = P.autoRefresh();
+  const label = flashing ? 'Atualizado agora' : st === 'waking' ? 'Acordando servidor…' : st === 'error' ? 'Sem conexão' : st === 'loading' ? 'Conectando…' : st === 'syncing' ? 'Atualizando…' : auto ? 'Sincronizado' : `Atualizado às ${hhmm(P.sync.last)}`;
   const cls = flashing ? 'flash' : st === 'error' ? 'err' : st === 'waking' || st === 'loading' ? 'warn' : '';
-  const tip = `<b>Conectado à Orbi API</b><div>Mesmos dados do app do motorista</div><div>Atualiza a cada ${CONFIG.pollSeconds} s · última: ${P.sync.last ? hhmm(P.sync.last) : '—'}</div>${P.sync.error ? `<div>${esc(P.sync.error)}</div>` : ''}`;
+  const tip = `<b>Conectado à Orbi API</b><div>Mesmos dados do app do motorista</div><div>${auto ? `Atualiza sozinho a cada ${auto} s` : 'Atualização manual (botão ao lado)'} · última: ${P.sync.last ? hhmm(P.sync.last) : '—'}</div>${P.sync.error ? `<div>${esc(P.sync.error)}</div>` : ''}`;
   return <span className={`sync-pill ${cls}`} data-tip={tip}><i /><span>{label}</span></span>;
+}
+
+/** Busca os dados da Orbi API agora (a atualização automática fica desligada por padrão). */
+export function RefreshButton({ P, label }: { P: any; label?: boolean }) {
+  const busy = P.sync.state === 'syncing' || P.sync.state === 'loading';
+  if (label) return <button className="btn sm ghost" disabled={busy} onClick={() => P.refresh()}><Icon name="refresh" size={busy ? 'sm spin' : 'sm'} /> {busy ? 'Atualizando…' : 'Atualizar'}</button>;
+  return <button className="icon-btn" aria-label="Atualizar dados" data-tip="Atualizar dados agora" disabled={busy} onClick={() => P.refresh()}><Icon name="refresh" size={busy ? 'spin' : ''} /></button>;
 }
 
 function SessionBanner({ P }: { P: any }) {

@@ -4,7 +4,7 @@
  */
 import Link from 'next/link';
 import { useRef } from 'react';
-import PageFrame from '@/components/Shell';
+import PageFrame, { RefreshButton } from '@/components/Shell';
 import { Icon } from '@/components/Icon';
 import { HealthDot, RouteFlags, StatusBadge, Progress, Empty, usePageState } from '@/components/common';
 import GeoMap from '@/components/maps/GeoMap';
@@ -12,7 +12,6 @@ import LiveMap from '@/components/maps/LiveMap';
 import { priorityModal } from '@/components/modals';
 import { useOrbi } from '@/lib/orbi/useOrbi';
 import { toast } from '@/lib/orbi/ui';
-import { CONFIG } from '@/lib/orbi/config';
 import { num, first, initials, ROUTE_STATUS } from '@/lib/orbi/format';
 
 const keep: any = { view: null }; // enquadramento do mapa real entre visitas
@@ -40,7 +39,8 @@ export default function LivePage() {
         <section className="live-map card pad0">
           {P.API ? <GeoMap P={P} routes={rs} keep={keep} focus={st.focus} onPick={id => set({ focus: id })} /> : <LiveMap P={P} routes={rs} viewKey="ao-vivo" focus={st.focus} onPick={id => set({ focus: id })} />}
           <div className="live-top"><span className="live-dot" /><b>{rs.filter((r: any) => r.status === 'IN_PROGRESS').length} em rota</b>
-            <span className="muted small">{P.API ? `atualiza a cada ${CONFIG.pollSeconds} s · posição = última parada registrada` : 'atualiza a cada segundo'}</span>
+            <span className="muted small">{P.API ? `${P.autoRefresh() ? `atualiza a cada ${P.autoRefresh()} s` : 'atualização manual'} · posição = última parada registrada` : 'atualiza a cada segundo'}</span>
+            {P.API && <RefreshButton P={P} label />}
             <button className="btn sm ghost" onClick={fullscreen}><Icon name="expand" size="sm" /> Tela cheia</button></div>
         </section>
         <aside className="live-side">
