@@ -60,3 +60,7 @@ lib/orbi/            estado e regras (portal.ts), conexão com a API (api.ts), f
 ## Deploy
 
 Funciona em qualquer hospedagem de Next.js (ex.: **Vercel**): importe o repositório e, se quiser, defina `ORBI_API_URL`.
+
+O `vercel.json` já diz à Vercel que o projeto é **Next.js**. Se o projeto tiver sido criado com outro preset, confira em
+*Settings → Build and Deployment*: **Framework Preset = Next.js** e **Output Directory** sem valor personalizado
+(o erro `No Output Directory named "public"` aparece quando o preset está como "Other").
