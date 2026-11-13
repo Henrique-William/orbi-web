@@ -6,7 +6,7 @@
  *   PATCH /api/route/{id}/assign-driver · PATCH /api/route/{id}/cancel · DELETE /api/route/{id}
  *   POST /api/route/optimize (usa a cota do OpenRouteService)
  */
-import { CONFIG } from './config';
+import { CONFIG, autoRefreshSeconds, saveAutoRefresh } from './config';
 import { esc, hhmm, rel, fmtMin, plural, pct, uid, TERMINAL, STOP_STATUS, type Check } from './format';
 
 const TOKEN_KEY = 'orbi-api-sessao';
@@ -219,16 +219,25 @@ export function enableApi(P: any) {
       setSyncState(e.status === 401 ? 'idle' : 'error', e.message);
     }
   }
+  // Atualização automática só se o gestor ligar (Configurações → Conexão). Por padrão é manual:
+  // cada consulta ao /api/route também busca as entregas de cada rota ativa, então evitamos chamadas à toa.
   function startPolling() {
     stopPolling();
-    const tick = () => { P.syncNow(); timer = setTimeout(tick, (document.hidden ? 60 : CONFIG.pollSeconds) * 1000); };
-    timer = setTimeout(tick, CONFIG.pollSeconds * 1000);
+    const every = autoRefreshSeconds();
+    if (!every) return;
+    const tick = () => { P.syncNow(); timer = setTimeout(tick, Math.max(every, document.hidden ? 120 : every) * 1000); };
+    timer = setTimeout(tick, every * 1000);
   }
   function stopPolling() { if (timer) clearTimeout(timer); timer = null; }
   P.startPolling = startPolling;
-  P.isPolling = () => !!timer;
+  P.isPolling = () => !!timer || !autoRefreshSeconds();
+  P.autoRefresh = () => autoRefreshSeconds();
+  P.setAutoRefresh = (seconds: number) => { saveAutoRefresh(seconds); if (readSession()) startPolling(); P.emit(); };
+  /** Botão "Atualizar": busca rotas e entregas agora (entregas de rotas já finalizadas vêm do cache). */
+  P.refresh = async () => { await P.syncNow(); if (P.sync.state === 'ok') P.toast('Dados atualizados', 'refresh'); };
   P.stopPolling = stopPolling;
-  document.addEventListener('visibilitychange', () => { if (!document.hidden && readSession() && P.sync.last) { P.syncNow(); startPolling(); } });
+  // ao voltar para a aba, atualiza na hora (só no modo automático)
+  document.addEventListener('visibilitychange', () => { if (!document.hidden && autoRefreshSeconds() && readSession() && P.sync.last) { P.syncNow(); startPolling(); } });
 
   // notificações locais geradas a partir do que mudou na API (ex.: motorista entregou pelo app)
   function rememberSnapshot(routes: any[]) {

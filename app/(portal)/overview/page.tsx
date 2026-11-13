@@ -3,7 +3,7 @@
  * Visão geral: indicadores do dia, entregas recentes, frota, rotas de hoje, motivos e ranking.
  */
 import Link from 'next/link';
-import PageFrame from '@/components/Shell';
+import PageFrame, { RefreshButton } from '@/components/Shell';
 import { Icon } from '@/components/Icon';
 import { Kpi, Of, COLORS, HealthDot, RouteFlags, StatusBadge, Progress, Empty, avg, successSeries, workDays, driverStats, openOccurrences, Legend } from '@/components/common';
 import { StackedBars, Donut, HBars } from '@/components/charts';
@@ -68,7 +68,7 @@ export default function OverviewPage() {
             segs={[{ label: 'Entregues', value: t.delivered, color: COLORS.ok }, { label: 'Pendentes', value: t.pending, color: COLORS.gray }, { label: 'Puladas', value: t.skipped, color: COLORS.skip }, { label: 'Canceladas', value: t.cancelled, color: COLORS.cancel }]} /></section>
       </div>
       <div className="grid g-1-1">
-        <section className="card pad0"><div className="card-head pad"><h3>Frota ao vivo</h3><Link className="link" href="/live">Abrir mapa <Icon name="chev" size="xs" /></Link></div>
+        <section className="card pad0"><div className="card-head pad"><h3>Frota ao vivo</h3><span className="row">{P.API && <RefreshButton P={P} label />}<Link className="link" href="/live">Abrir mapa <Icon name="chev" size="xs" /></Link></span></div>
           {P.API ? <GeoMap P={P} routes={mapRoutes} className="mini-map" onPick={id => router.push('/routes/' + id)} /> : <LiveMap P={P} routes={mapRoutes} className="mini-map" legend onPick={id => router.push('/routes/' + id)} />}</section>
         <section className="card"><div className="card-head"><h3>Rotas de hoje</h3><Link className="link" href="/routes">Todas <Icon name="chev" size="xs" /></Link></div>
           <div className="rlist">{todayRoutes.length ? todayRoutes.map((r: any) => { const inf = P.routeInfo(r); const d = P.user(r.driverId); return (
