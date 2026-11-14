@@ -65,7 +65,7 @@ export default function RoutePage() {
         <div className={`callout ${r.priority.level === 'URGENT' ? 'red' : 'amber'}`}><Icon name="zap" size="sm" /><span><b>{PRIORITY[r.priority.level][0]}</b> · “{r.priority.message}” · enviado {rel(r.priority.at)} · {r.priority.requireAck ? (r.priority.ackAt ? `motorista ciente às ${hhmm(r.priority.ackAt)}` : 'aguardando “Ciente”') : 'sem confirmação'}</span></div>
       )}
       <div className="grid g-2-1">
-        <section className="card pad0">{P.API ? <GeoMap P={P} routes={[r]} className="map-host tall" /> : <RouteSvg P={P} route={r} highlightNext={r.status === 'IN_PROGRESS'} className="map-host tall" />}</section>
+        <section className="card pad0"><GeoMap P={P} routes={[r]} className="map-host tall" /></section>
         <div className="stack">
           <section className={`card health ${h.worst}`}>
             <div className="card-head"><h3><span className={`hdot ${h.worst}`} /> Situação da rota</h3><span className={`badge ${h.worst === 'ok' ? 'green' : h.worst === 'warn' ? 'amber' : 'red'}`}>{({ ok: 'Tudo certo', warn: 'Atenção', bad: 'Ação necessária' } as any)[h.worst]}</span></div>

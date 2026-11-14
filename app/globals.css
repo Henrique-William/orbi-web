@@ -327,10 +327,14 @@ kbd { font: 500 11px/1 var(--mono); padding: 3px 5px; border-radius: 4px; border
 .ring div { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; } .ring b { font-size: 16px; } .ring span { font-size: 11px; color: var(--muted); }
 
 /* ---------- Mapas ---------- */
-.map-host { position: relative; height: 340px; background: var(--map-bg); overflow: hidden; }
+.map-host { position: relative; width: 100%; max-width: 100%; height: 340px; background: var(--map-bg); overflow: hidden; }
 .map-host.tall { height: 100%; min-height: 380px; }
 .map-host > svg, .map-host .map-svg { width: 100%; height: 100%; display: block; }
-.mini-map { position: relative; height: 320px; overflow: hidden; background: var(--map-bg); }
+.mini-map { position: relative; width: 100%; max-width: 100%; height: 320px; overflow: hidden; background: var(--map-bg); }
+.gm-canvas { position: absolute !important; inset: 0; width: 100% !important; height: 100% !important; }
+.gm-style img { max-width: none; }
+.gm-style .gm-control-active { box-sizing: content-box; }
+.gm-style .gm-control-active:focus-visible { box-shadow: none; border-radius: 2px; }
 .lmap { width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
 .lmap.drag { cursor: grabbing; }
 .lmap-ctl { position: absolute; right: 10px; top: 10px; display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--radius-sm); overflow: hidden; background: var(--card); box-shadow: var(--shadow); z-index: 500; }

@@ -69,7 +69,7 @@ export default function OverviewPage() {
       </div>
       <div className="grid g-1-1">
         <section className="card pad0"><div className="card-head pad"><h3>Frota ao vivo</h3><span className="row">{P.API && <RefreshButton P={P} label />}<Link className="link" href="/live">Abrir mapa <Icon name="chev" size="xs" /></Link></span></div>
-          {P.API ? <GeoMap P={P} routes={mapRoutes} className="mini-map" onPick={id => router.push('/routes/' + id)} /> : <LiveMap P={P} routes={mapRoutes} className="mini-map" legend onPick={id => router.push('/routes/' + id)} />}</section>
+          <GeoMap P={P} routes={mapRoutes} className="mini-map" onPick={id => router.push('/routes/' + id)} /></section>
         <section className="card"><div className="card-head"><h3>Rotas de hoje</h3><Link className="link" href="/routes">Todas <Icon name="chev" size="xs" /></Link></div>
           <div className="rlist">{todayRoutes.length ? todayRoutes.map((r: any) => { const inf = P.routeInfo(r); const d = P.user(r.driverId); return (
             <Link key={r.id} className="rrow" href={'/routes/' + r.id}><HealthDot P={P} r={r} /><span className="rr-main"><b>{r.code}</b><small>{d ? d.name : 'Sem motorista'} · {r.window}</small></span>

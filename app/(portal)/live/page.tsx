@@ -37,7 +37,7 @@ export default function LivePage() {
     <PageFrame active="live" title="Ao vivo" sub={P.API ? 'Rotas e paradas da Orbi API, atualizadas automaticamente' : 'Posição estimada da frota em tempo real'}>
       <div className="live" ref={wrap}>
         <section className="live-map card pad0">
-          {P.API ? <GeoMap P={P} routes={rs} keep={keep} focus={st.focus} onPick={id => set({ focus: id })} /> : <LiveMap P={P} routes={rs} viewKey="ao-vivo" focus={st.focus} onPick={id => set({ focus: id })} />}
+          <GeoMap P={P} routes={rs} keep={keep} focus={st.focus} onPick={id => set({ focus: id })} />
           <div className="live-top"><span className="live-dot" /><b>{rs.filter((r: any) => r.status === 'IN_PROGRESS').length} em rota</b>
             <span className="muted small">{P.API ? `${P.autoRefresh() ? `atualiza a cada ${P.autoRefresh()} s` : 'atualização manual'} · posição = última parada registrada` : 'atualiza a cada segundo'}</span>
             {P.API && <RefreshButton P={P} label />}
