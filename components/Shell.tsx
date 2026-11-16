@@ -16,7 +16,7 @@ import { newDriverModal } from './modals';
 
 export const NAV: [string, string, string, string][] = [
   ['overview', 'Visão geral', 'grid', 'Operação'], ['live', 'Ao vivo', 'radar', 'Operação'], ['routes', 'Rotas', 'route', 'Operação'], ['occurrences', 'Ocorrências', 'alert', 'Operação'],
-  ['drivers', 'Motoristas', 'users', 'Equipe'], ['messages', 'Mensagens', 'chat', 'Equipe'], ['reports', 'Relatórios', 'bars', 'Análise'], ['settings', 'Configurações', 'settings', 'Conta']
+  ['drivers', 'Motoristas', 'users', 'Equipe'], ['messages', 'Mensagens', 'chat', 'Equipe'], ['reports', 'Relatórios', 'bars', 'Análise'], ['benchmark', 'Benchmark', 'chart', 'Análise'], ['settings', 'Configurações', 'settings', 'Conta']
 ];
 const navItems = (P: any) => NAV.filter(n => !(P.API && n[0] === 'messages'));
 
@@ -57,7 +57,7 @@ export default function PageFrame({ active, title, sub, path, actions, noHead, c
       const k = e.key.toLowerCase();
       if (k === 'n') { router.push('/routes/new'); return; }
       if (k === 'g') { g = Date.now(); return; }
-      if (Date.now() - g < 1200) { const map: any = { v: 'overview', a: 'live', r: 'routes', m: 'drivers', o: 'occurrences' }; if (map[k]) router.push('/' + map[k]); g = 0; }
+      if (Date.now() - g < 1200) { const map: any = { v: 'overview', a: 'live', r: 'routes', m: 'drivers', o: 'occurrences', b: 'benchmark' }; if (map[k]) router.push('/' + map[k]); g = 0; }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);

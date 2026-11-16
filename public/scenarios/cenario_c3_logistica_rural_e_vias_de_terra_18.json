@@ -1,0 +1,200 @@
+[
+  {
+    "id": 0,
+    "originalIndex": 0,
+    "name": "Av. Francisco Glicério",
+    "latitude": -22.904287,
+    "longitude": -47.060046,
+    "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+    "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 1,
+    "originalIndex": 2,
+    "name": "Av. Júlio de Mesquita",
+    "latitude": -22.900235,
+    "longitude": -47.054601,
+    "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+    "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 2,
+    "originalIndex": 4,
+    "name": "Av. José de Sousa Campos",
+    "latitude": -22.890797,
+    "longitude": -47.046349,
+    "address": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+    "formattedAddress": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 3,
+    "originalIndex": 6,
+    "name": "Av. Albino J. B. de Oliveira",
+    "latitude": -22.82266,
+    "longitude": -47.080435,
+    "address": "Av. Albino J. B. de Oliveira - Barão Geraldo, Campinas - SP",
+    "formattedAddress": "Av. Albino J. B. de Oliveira - Barão Geraldo, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 4,
+    "originalIndex": 9,
+    "name": "Rua Cel. Quirino",
+    "latitude": -22.897564,
+    "longitude": -47.052931,
+    "address": "R. Cel. Quirino - Cambuí, Campinas - SP",
+    "formattedAddress": "R. Cel. Quirino - Cambuí, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 5,
+    "originalIndex": 10,
+    "name": "Av. Iguatemi",
+    "latitude": -22.893593,
+    "longitude": -47.026856,
+    "address": "Av. Iguatemi - Vila Brandina, Campinas - SP",
+    "formattedAddress": "Av. Iguatemi - Vila Brandina, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 6,
+    "originalIndex": 14,
+    "name": "Av. John Boyd Dunlop",
+    "latitude": -22.932467,
+    "longitude": -47.114957,
+    "address": "Av. John Boyd Dunlop - Jardim Ipaussurama, Campinas - SP",
+    "formattedAddress": "Av. John Boyd Dunlop - Jardim Ipaussurama, Campinas - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 7,
+    "originalIndex": 15,
+    "name": "Av. Heitor Penteado",
+    "latitude": -22.871299,
+    "longitude": -47.045017,
+    "address": "Av. Dr. Heitor Penteado (Taquaral) - Campinas - SP",
+    "formattedAddress": "Av. Dr. Heitor Penteado (Taquaral) - Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 8,
+    "originalIndex": 16,
+    "name": "Av. Guilherme Campos",
+    "latitude": -22.851181,
+    "longitude": -47.062857,
+    "address": "Parque D. Pedro Shopping - Santa Genebra, Campinas - SP",
+    "formattedAddress": "Parque D. Pedro Shopping - Santa Genebra, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 9,
+    "originalIndex": 17,
+    "name": "Av. Prestes Maia",
+    "latitude": -22.91936,
+    "longitude": -47.053751,
+    "address": "Av. Prestes Maia - Jardim do Trevo, Campinas - SP",
+    "formattedAddress": "Av. Prestes Maia - Jardim do Trevo, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 10,
+    "originalIndex": 18,
+    "name": "Rua Cel. Alfredo Augusto do Nascimento, Sousas",
+    "latitude": -22.879452,
+    "longitude": -46.962014,
+    "address": "Centro Histórico de Sousas (Paralelepípedo), Campinas - SP",
+    "formattedAddress": "Centro Histórico de Sousas (Paralelepípedo), Campinas - SP",
+    "characteristicSurfaceFactor": 1.12,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 11,
+    "originalIndex": 19,
+    "name": "Rua Heitor Penteado, Joaquim Egídio",
+    "latitude": -22.887816,
+    "longitude": -46.942296,
+    "address": "Vila de Joaquim Egídio (Pedra/Paralelepípedo), Campinas - SP",
+    "formattedAddress": "Vila de Joaquim Egídio (Pedra/Paralelepípedo), Campinas - SP",
+    "characteristicSurfaceFactor": 1.15,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 12,
+    "originalIndex": 20,
+    "name": "Estrada Municipal Luciano Rocha, Joaquim Egídio",
+    "latitude": -22.8962,
+    "longitude": -46.9215,
+    "address": "Estrada Rural Joaquim Egídio (Terra/Cascalho), Campinas - SP",
+    "formattedAddress": "Estrada Rural Joaquim Egídio (Terra/Cascalho), Campinas - SP",
+    "characteristicSurfaceFactor": 1.24,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 13,
+    "originalIndex": 21,
+    "name": "Rod. José Bonifácio Coutinho Nogueira",
+    "latitude": -22.890757,
+    "longitude": -46.938204,
+    "address": "Acesso Serra das Cabras / Sousas, Campinas - SP",
+    "formattedAddress": "Acesso Serra das Cabras / Sousas, Campinas - SP",
+    "characteristicSurfaceFactor": 1.18,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 14,
+    "originalIndex": 22,
+    "name": "Estrada do Capricórnio, Joaquim Egídio",
+    "latitude": -22.891881,
+    "longitude": -46.835151,
+    "address": "Estrada Monte Urânia / Capricórnio (Não Pavimentada), Campinas - SP",
+    "formattedAddress": "Estrada Monte Urânia / Capricórnio (Não Pavimentada), Campinas - SP",
+    "characteristicSurfaceFactor": 1.28,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 15,
+    "originalIndex": 23,
+    "name": "Estrada Municipal da Rhodia, Barão Geraldo",
+    "latitude": -22.756956,
+    "longitude": -47.059542,
+    "address": "Corredor Rural Rio das Pedras / Barão Geraldo, Campinas - SP",
+    "formattedAddress": "Corredor Rural Rio das Pedras / Barão Geraldo, Campinas - SP",
+    "characteristicSurfaceFactor": 1.16,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 16,
+    "originalIndex": 24,
+    "name": "Estrada Municipal das Cabras, Joaquim Egídio",
+    "latitude": -22.8685,
+    "longitude": -46.9124,
+    "address": "Estrada das Cabras (Terra/Cascalho), Campinas - SP",
+    "formattedAddress": "Estrada das Cabras (Terra/Cascalho), Campinas - SP",
+    "characteristicSurfaceFactor": 1.26,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 17,
+    "originalIndex": 25,
+    "name": "Rua Maneco Rosa, Joaquim Egídio",
+    "latitude": -22.8891,
+    "longitude": -46.9395,
+    "address": "Trilha Rural Joaquim Egídio, Campinas - SP",
+    "formattedAddress": "Trilha Rural Joaquim Egídio, Campinas - SP",
+    "characteristicSurfaceFactor": 1.22,
+    "cachedFromGoogle": true
+  }
+]

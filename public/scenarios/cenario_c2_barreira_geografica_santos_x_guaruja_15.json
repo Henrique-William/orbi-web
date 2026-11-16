@@ -1,0 +1,167 @@
+[
+  {
+    "id": 0,
+    "originalIndex": 0,
+    "name": "Av. Conselheiro Nébias, 800, Boqueirão, Santos - SP",
+    "latitude": -23.969074,
+    "longitude": -46.324185,
+    "address": "Base Santos - Boqueirão, Santos - SP",
+    "formattedAddress": "Base Santos - Boqueirão, Santos - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 1,
+    "originalIndex": 1,
+    "name": "Av. Almirante Saldanha da Gama, 100, Ponta da Praia, Santos",
+    "latitude": -23.990043,
+    "longitude": -46.299833,
+    "address": "Ponta da Praia (Margem Oeste do Canal), Santos - SP",
+    "formattedAddress": "Ponta da Praia (Margem Oeste do Canal), Santos - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 2,
+    "originalIndex": 2,
+    "name": "Av. Thiago Ferreira, 500, Vicente de Carvalho, Guarujá",
+    "latitude": -23.941662,
+    "longitude": -46.304048,
+    "address": "Vicente de Carvalho (Margem Leste do Canal), Guarujá - SP",
+    "formattedAddress": "Vicente de Carvalho (Margem Leste do Canal), Guarujá - SP",
+    "characteristicSurfaceFactor": 1.04,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 3,
+    "originalIndex": 3,
+    "name": "Praça das Bandeiras, Gonzaga, Santos - SP",
+    "latitude": -23.969846,
+    "longitude": -46.333166,
+    "address": "Gonzaga, Santos - SP",
+    "formattedAddress": "Gonzaga, Santos - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 4,
+    "originalIndex": 4,
+    "name": "Av. Puglisi, 400, Pitangueiras, Guarujá - SP",
+    "latitude": -23.993413,
+    "longitude": -46.257726,
+    "address": "Centro / Pitangueiras, Guarujá - SP",
+    "formattedAddress": "Centro / Pitangueiras, Guarujá - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 5,
+    "originalIndex": 5,
+    "name": "Av. Ana Costa, 200, Vila Mathias, Santos - SP",
+    "latitude": -23.95276,
+    "longitude": -46.33136,
+    "address": "Vila Mathias, Santos - SP",
+    "formattedAddress": "Vila Mathias, Santos - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 6,
+    "originalIndex": 6,
+    "name": "Av. Miguel Estéfano, 2500, Enseada, Guarujá - SP",
+    "latitude": -23.986225,
+    "longitude": -46.226386,
+    "address": "Praia da Enseada, Guarujá - SP",
+    "formattedAddress": "Praia da Enseada, Guarujá - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 7,
+    "originalIndex": 7,
+    "name": "Via Anchieta, Alemoa, Santos - SP",
+    "latitude": -23.926679,
+    "longitude": -46.378807,
+    "address": "Terminal Retroportuário Alemoa, Santos - SP",
+    "formattedAddress": "Terminal Retroportuário Alemoa, Santos - SP",
+    "characteristicSurfaceFactor": 1.05,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 8,
+    "originalIndex": 8,
+    "name": "Av. General Monteiro de Barros, Astúrias, Guarujá - SP",
+    "latitude": -24.010223,
+    "longitude": -46.266289,
+    "address": "Ponta das Astúrias, Guarujá - SP",
+    "formattedAddress": "Ponta das Astúrias, Guarujá - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 9,
+    "originalIndex": 9,
+    "name": "Praça Barão do Rio Branco, Centro, São Vicente - SP",
+    "latitude": -23.966709,
+    "longitude": -46.385621,
+    "address": "Centro de São Vicente, São Vicente - SP",
+    "formattedAddress": "Centro de São Vicente, São Vicente - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 10,
+    "originalIndex": 10,
+    "name": "Av. Nove de Abril, 2000, Centro, Cubatão - SP",
+    "latitude": -23.883329,
+    "longitude": -46.42137,
+    "address": "Entroncamento Rodoviário Piaçaguera, Cubatão - SP",
+    "formattedAddress": "Entroncamento Rodoviário Piaçaguera, Cubatão - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 11,
+    "originalIndex": 11,
+    "name": "Av. Santos Dumont, 1500, Sítio Paecará, Guarujá - SP",
+    "latitude": -23.95463,
+    "longitude": -46.291582,
+    "address": "Distrito Portuário Paecará, Guarujá - SP",
+    "formattedAddress": "Distrito Portuário Paecará, Guarujá - SP",
+    "characteristicSurfaceFactor": 1.04,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 12,
+    "originalIndex": 12,
+    "name": "Av. Presidente Wilson, José Menino, Santos - SP",
+    "latitude": -23.9712,
+    "longitude": -46.3489,
+    "address": "Orla José Menino, Santos - SP",
+    "formattedAddress": "Orla José Menino, Santos - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": false
+  },
+  {
+    "id": 13,
+    "originalIndex": 13,
+    "name": "Av. Dom Pedro I, Enseada, Guarujá - SP",
+    "latitude": -23.9785,
+    "longitude": -46.2412,
+    "address": "Corredor Dom Pedro I, Guarujá - SP",
+    "formattedAddress": "Corredor Dom Pedro I, Guarujá - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": false
+  },
+  {
+    "id": 14,
+    "originalIndex": 14,
+    "name": "Av. Martins Fontes, Saboó, Santos - SP",
+    "latitude": -23.9384,
+    "longitude": -46.3421,
+    "address": "Acesso Portuário Saboó, Santos - SP",
+    "formattedAddress": "Acesso Portuário Saboó, Santos - SP",
+    "characteristicSurfaceFactor": 1.03,
+    "cachedFromGoogle": false
+  }
+]

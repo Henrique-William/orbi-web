@@ -1,0 +1,134 @@
+[
+  {
+    "id": 0,
+    "originalIndex": 0,
+    "name": "Av. Francisco Glicério",
+    "latitude": -22.904287,
+    "longitude": -47.060046,
+    "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+    "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 1,
+    "originalIndex": 1,
+    "name": "Rua Barão de Jaguara",
+    "latitude": -22.907477,
+    "longitude": -47.057499,
+    "address": "Rua Barão de Jaguara - Centro, Campinas - SP",
+    "formattedAddress": "Rua Barão de Jaguara - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 2,
+    "originalIndex": 2,
+    "name": "Av. Júlio de Mesquita",
+    "latitude": -22.900235,
+    "longitude": -47.054601,
+    "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+    "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+    "characteristicSurfaceFactor": 1.02,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 3,
+    "originalIndex": 3,
+    "name": "Rua General Osório",
+    "latitude": -22.903764,
+    "longitude": -47.059365,
+    "address": "R. Gen. Osório - Centro, Campinas - SP",
+    "formattedAddress": "R. Gen. Osório - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 4,
+    "originalIndex": 4,
+    "name": "Av. José de Sousa Campos",
+    "latitude": -22.890797,
+    "longitude": -47.046349,
+    "address": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+    "formattedAddress": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 5,
+    "originalIndex": 5,
+    "name": "Rua Conceição",
+    "latitude": -22.903195,
+    "longitude": -47.054007,
+    "address": "R. Conceição - Centro, Campinas - SP",
+    "formattedAddress": "R. Conceição - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 6,
+    "originalIndex": 6,
+    "name": "Av. Albino J. B. de Oliveira",
+    "latitude": -22.82266,
+    "longitude": -47.080435,
+    "address": "Av. Albino J. B. de Oliveira - Barão Geraldo, Campinas - SP",
+    "formattedAddress": "Av. Albino J. B. de Oliveira - Barão Geraldo, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 7,
+    "originalIndex": 7,
+    "name": "Rua Dr. Quirino",
+    "latitude": -22.906078,
+    "longitude": -47.05732,
+    "address": "R. Dr. Quirino - Centro, Campinas - SP",
+    "formattedAddress": "R. Dr. Quirino - Centro, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 8,
+    "originalIndex": 8,
+    "name": "Av. Aquidabã",
+    "latitude": -22.910223,
+    "longitude": -47.055315,
+    "address": "Av. Aquidabã - Campinas - SP",
+    "formattedAddress": "Av. Aquidabã - Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 9,
+    "originalIndex": 9,
+    "name": "Rua Cel. Quirino",
+    "latitude": -22.897564,
+    "longitude": -47.052931,
+    "address": "R. Cel. Quirino - Cambuí, Campinas - SP",
+    "formattedAddress": "R. Cel. Quirino - Cambuí, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 10,
+    "originalIndex": 10,
+    "name": "Av. Iguatemi",
+    "latitude": -22.893593,
+    "longitude": -47.026856,
+    "address": "Av. Iguatemi - Vila Brandina, Campinas - SP",
+    "formattedAddress": "Av. Iguatemi - Vila Brandina, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  },
+  {
+    "id": 11,
+    "originalIndex": 11,
+    "name": "Av. Brasil",
+    "latitude": -22.888753,
+    "longitude": -47.062819,
+    "address": "Av. Brasil - Guanabara, Campinas - SP",
+    "formattedAddress": "Av. Brasil - Guanabara, Campinas - SP",
+    "characteristicSurfaceFactor": 1,
+    "cachedFromGoogle": true
+  }
+]

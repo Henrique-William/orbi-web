@@ -1,0 +1,272 @@
+[
+  {
+    "id": "C1",
+    "code": "C1",
+    "name": "Carga Pesada / B2B Doca",
+    "stopsCount": 12,
+    "dwellTimeMin": 18.0,
+    "description": "Entregas volumosas/linha branca com ~18 min de doca por cliente no centro de Campinas.",
+    "fileName": "c1.json",
+    "descriptiveFileName": "cenario_c1_carga_pesada_b2b_doca_12.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Francisco Glicério",
+        "latitude": -22.904287,
+        "longitude": -47.060046,
+        "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 1,
+        "name": "Rua Barão de Jaguara",
+        "latitude": -22.907477,
+        "longitude": -47.057499,
+        "address": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "formattedAddress": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 2,
+        "name": "Av. Júlio de Mesquita",
+        "latitude": -22.900235,
+        "longitude": -47.054601,
+        "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "characteristicSurfaceFactor": 1.02,
+        "cachedFromGoogle": true
+      }
+    ]
+  },
+  {
+    "id": "C2",
+    "code": "C2",
+    "name": "Barreira Geográfica Santos x Guarujá",
+    "stopsCount": 15,
+    "dwellTimeMin": 12.0,
+    "description": "Cargas portuárias e litorâneas onde 450m no canal = 52 km rodoviários via Cubatão.",
+    "fileName": "c2.json",
+    "descriptiveFileName": "cenario_c2_barreira_geografica_santos_x_guaruja_15.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Conselheiro Nébias, 800, Boqueirão, Santos - SP",
+        "latitude": -23.969074,
+        "longitude": -46.324185,
+        "address": "Base Santos - Boqueirão, Santos - SP",
+        "formattedAddress": "Base Santos - Boqueirão, Santos - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 1,
+        "name": "Av. Almirante Saldanha da Gama, 100, Ponta da Praia, Santos",
+        "latitude": -23.990043,
+        "longitude": -46.299833,
+        "address": "Ponta da Praia (Margem Oeste do Canal), Santos - SP",
+        "formattedAddress": "Ponta da Praia (Margem Oeste do Canal), Santos - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 2,
+        "name": "Av. Thiago Ferreira, 500, Vicente de Carvalho, Guarujá",
+        "latitude": -23.941662,
+        "longitude": -46.304048,
+        "address": "Vicente de Carvalho (Margem Leste do Canal), Guarujá - SP",
+        "formattedAddress": "Vicente de Carvalho (Margem Leste do Canal), Guarujá - SP",
+        "characteristicSurfaceFactor": 1.04,
+        "cachedFromGoogle": true
+      }
+    ]
+  },
+  {
+    "id": "C3",
+    "code": "C3",
+    "name": "Logística Rural e Vias de Terra",
+    "stopsCount": 18,
+    "dwellTimeMin": 10.0,
+    "description": "Estradas rurais e de terra em Joaquim Egídio e Sousas com fator de superfície Phi_ij até 1.28.",
+    "fileName": "c3.json",
+    "descriptiveFileName": "cenario_c3_logistica_rural_e_vias_de_terra_18.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Francisco Glicério",
+        "latitude": -22.904287,
+        "longitude": -47.060046,
+        "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 2,
+        "name": "Av. Júlio de Mesquita",
+        "latitude": -22.900235,
+        "longitude": -47.054601,
+        "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "characteristicSurfaceFactor": 1.02,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 4,
+        "name": "Av. José de Sousa Campos",
+        "latitude": -22.890797,
+        "longitude": -47.046349,
+        "address": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+        "formattedAddress": "Av. José de Sousa Campos (Norte-Sul) - Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      }
+    ]
+  },
+  {
+    "id": "C4",
+    "code": "C4",
+    "name": "Distribuição Comercial B2B / VUC Regional",
+    "stopsCount": 35,
+    "dwellTimeMin": 7.0,
+    "description": "Distribuição regional com veículos VUC na Região Metropolitana de Campinas (RMC).",
+    "fileName": "c4.json",
+    "descriptiveFileName": "cenario_c4_distribuicao_comercial_b2b_vuc_regional_35.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Francisco Glicério",
+        "latitude": -22.904287,
+        "longitude": -47.060046,
+        "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 1,
+        "name": "Rua Barão de Jaguara",
+        "latitude": -22.907477,
+        "longitude": -47.057499,
+        "address": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "formattedAddress": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 2,
+        "name": "Av. Júlio de Mesquita",
+        "latitude": -22.900235,
+        "longitude": -47.054601,
+        "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "characteristicSurfaceFactor": 1.02,
+        "cachedFromGoogle": true
+      }
+    ]
+  },
+  {
+    "id": "C5",
+    "code": "C5",
+    "name": "E-commerce Last-Mile Padrão Brasil",
+    "stopsCount": 70,
+    "dwellTimeMin": 4.0,
+    "description": "Rota densa de van de e-commerce padrão Brasil (Vans/Fiorino tipo Mercado Livre/Shopee).",
+    "fileName": "c5.json",
+    "descriptiveFileName": "cenario_c5_e_commerce_last_mile_padrao_brasil_70.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Francisco Glicério",
+        "latitude": -22.904287,
+        "longitude": -47.060046,
+        "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 1,
+        "name": "Rua Barão de Jaguara",
+        "latitude": -22.907477,
+        "longitude": -47.057499,
+        "address": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "formattedAddress": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 2,
+        "name": "Av. Júlio de Mesquita",
+        "latitude": -22.900235,
+        "longitude": -47.054601,
+        "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "characteristicSurfaceFactor": 1.02,
+        "cachedFromGoogle": true
+      }
+    ]
+  },
+  {
+    "id": "C6",
+    "code": "C6",
+    "name": "E-commerce Alta Densidade / Black Friday",
+    "stopsCount": 110,
+    "dwellTimeMin": 3.0,
+    "description": "Rota ultra-densa de pico sazonal (Amazon DSP / Black Friday) com 110 paradas urbanas.",
+    "fileName": "c6.json",
+    "descriptiveFileName": "cenario_c6_e_commerce_alta_densidade_black_friday_110.json",
+    "sampleStops": [
+      {
+        "id": 0,
+        "originalIndex": 0,
+        "name": "Av. Francisco Glicério",
+        "latitude": -22.904287,
+        "longitude": -47.060046,
+        "address": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "formattedAddress": "Av. Francisco Glicério - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 1,
+        "originalIndex": 1,
+        "name": "Rua Barão de Jaguara",
+        "latitude": -22.907477,
+        "longitude": -47.057499,
+        "address": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "formattedAddress": "Rua Barão de Jaguara - Centro, Campinas - SP",
+        "characteristicSurfaceFactor": 1,
+        "cachedFromGoogle": true
+      },
+      {
+        "id": 2,
+        "originalIndex": 2,
+        "name": "Av. Júlio de Mesquita",
+        "latitude": -22.900235,
+        "longitude": -47.054601,
+        "address": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "formattedAddress": "Av. Júlio de Mesquita - Cambuí, Campinas - SP",
+        "characteristicSurfaceFactor": 1.02,
+        "cachedFromGoogle": true
+      }
+    ]
+  }
+]
