@@ -22,17 +22,29 @@ export interface BenchmarkModelResult {
   algorithmName: string;
   algorithmType: string;
   complexity: string;
-  executionTimeMs: number;
-  totalDistanceKm: number;
-  totalDurationMin: number;
-  totalCost: number;
-  avgSurfaceFactor: number;
-  efficiencyGainPct: number;
+  isValid?: boolean;
+  status?: string;
+  invalidReason?: string;
+  optimalityGapPct?: number | null;
+  executionTimeMs?: number | null;
+  totalDistanceKm?: number | null;
+  totalDurationMin?: number | null;
+  totalCost?: number | null;
+  avgSurfaceFactor?: number | null;
+  efficiencyGainPct?: number | null;
   initialDurationMin: number;
   initialDistanceKm: number;
   tourOrderJson?: string;
   routeCoordinatesJson?: string;
   notes?: string;
+}
+
+export function isModelValid(m?: BenchmarkModelResult | null): boolean {
+  if (!m) return false;
+  if (m.isValid === false) return false;
+  if (m.status && m.status.startsWith('INVALID')) return false;
+  if (m.totalDistanceKm == null || m.totalDistanceKm <= 0) return false;
+  return true;
 }
 
 export interface BenchmarkSession {
@@ -237,17 +249,28 @@ function getAuthHeaders(): Record<string, string> {
 
 function pickWinningModel(models?: BenchmarkModelResult[] | null): BenchmarkModelResult | null {
   if (!models || models.length === 0) return null;
-  const nonBaseline = models.filter(m => !m.algorithmName.includes('Baseline'));
-  const pool = nonBaseline.length > 0 ? nonBaseline : models;
+  const validModels = models.filter(isModelValid);
+  const nonBaseline = validModels.filter(m => !m.algorithmName.includes('Baseline'));
+  const pool = nonBaseline.length > 0 ? nonBaseline : (validModels.length > 0 ? validModels : models);
   return [...pool].sort((a, b) => {
-    const costDiff = (a.totalCost || a.totalDistanceKm) - (b.totalCost || b.totalDistanceKm);
+    const aValid = isModelValid(a);
+    const bValid = isModelValid(b);
+    if (aValid !== bValid) return aValid ? -1 : 1;
+
+    const aCost = (a.totalCost != null && a.totalCost > 0) ? a.totalCost : (a.totalDistanceKm ?? Infinity);
+    const bCost = (b.totalCost != null && b.totalCost > 0) ? b.totalCost : (b.totalDistanceKm ?? Infinity);
+    const costDiff = aCost - bCost;
     if (Math.abs(costDiff) >= 0.05) return costDiff;
-    const distDiff = a.totalDistanceKm - b.totalDistanceKm;
+
+    const aDist = a.totalDistanceKm ?? Infinity;
+    const bDist = b.totalDistanceKm ?? Infinity;
+    const distDiff = aDist - bDist;
     if (Math.abs(distDiff) >= 0.05) return distDiff;
+
     const aOrbi = a.algorithmName.includes('ALNS Orbi');
     const bOrbi = b.algorithmName.includes('ALNS Orbi');
     if (aOrbi !== bOrbi) return aOrbi ? -1 : 1;
-    return a.executionTimeMs - b.executionTimeMs;
+    return (a.executionTimeMs ?? 0) - (b.executionTimeMs ?? 0);
   })[0];
 }
 
@@ -540,13 +563,13 @@ export default function BenchmarkPage() {
         algorithmName: m.algorithmName,
         algorithmType: m.algorithmType,
         complexity: m.complexity,
-        executionTimeMs: m.executionTimeMs,
+        executionTimeMs: m.executionTimeMs ?? undefined,
         color: MODEL_COLORS[m.algorithmName] || '#3B82F6',
         dash: isBaseline,
         strokeWeight: isBaseline ? 2 : 4,
-        distanceKm: m.totalDistanceKm,
-        durationMin: m.totalDurationMin,
-        efficiencyGainPct: m.efficiencyGainPct,
+        distanceKm: m.totalDistanceKm ?? 0,
+        durationMin: m.totalDurationMin ?? 0,
+        efficiencyGainPct: m.efficiencyGainPct ?? undefined,
         points
       };
     });
@@ -585,10 +608,15 @@ export default function BenchmarkPage() {
         return true;
       })
       .sort((a, b) => {
-        if (sortBy === 'distance') return a.totalDistanceKm - b.totalDistanceKm;
-        if (sortBy === 'duration') return a.totalDurationMin - b.totalDurationMin;
-        if (sortBy === 'economy') return (b.efficiencyGainPct || 0) - (a.efficiencyGainPct || 0);
-        if (sortBy === 'executionTime') return a.executionTimeMs - b.executionTimeMs;
+        const aValid = isModelValid(a);
+        const bValid = isModelValid(b);
+        if (aValid !== bValid) return aValid ? -1 : 1;
+        if (!aValid && !bValid) return a.algorithmName.localeCompare(b.algorithmName);
+
+        if (sortBy === 'distance') return (a.totalDistanceKm ?? Infinity) - (b.totalDistanceKm ?? Infinity);
+        if (sortBy === 'duration') return (a.totalDurationMin ?? Infinity) - (b.totalDurationMin ?? Infinity);
+        if (sortBy === 'economy') return (b.efficiencyGainPct ?? -Infinity) - (a.efficiencyGainPct ?? -Infinity);
+        if (sortBy === 'executionTime') return (a.executionTimeMs ?? Infinity) - (b.executionTimeMs ?? Infinity);
         return 0;
       });
   }, [currentScenarioSession, typeFilter, sortBy]);
@@ -631,10 +659,15 @@ export default function BenchmarkPage() {
       })
       .sort((a, b) => {
         if (a.scenarioCode !== b.scenarioCode) return a.scenarioCode.localeCompare(b.scenarioCode);
-        if (sortBy === 'duration') return a.model.totalDurationMin - b.model.totalDurationMin;
-        if (sortBy === 'economy') return (b.model.efficiencyGainPct || 0) - (a.model.efficiencyGainPct || 0);
-        if (sortBy === 'executionTime') return a.model.executionTimeMs - b.model.executionTimeMs;
-        return a.model.totalDistanceKm - b.model.totalDistanceKm;
+        const aValid = isModelValid(a.model);
+        const bValid = isModelValid(b.model);
+        if (aValid !== bValid) return aValid ? -1 : 1;
+        if (!aValid && !bValid) return a.model.algorithmName.localeCompare(b.model.algorithmName);
+
+        if (sortBy === 'duration') return (a.model.totalDurationMin ?? Infinity) - (b.model.totalDurationMin ?? Infinity);
+        if (sortBy === 'economy') return (b.model.efficiencyGainPct ?? -Infinity) - (a.model.efficiencyGainPct ?? -Infinity);
+        if (sortBy === 'executionTime') return (a.model.executionTimeMs ?? Infinity) - (b.model.executionTimeMs ?? Infinity);
+        return (a.model.totalDistanceKm ?? Infinity) - (b.model.totalDistanceKm ?? Infinity);
       });
   }, [activeBatch, typeFilter, sortBy]);
 
@@ -669,7 +702,7 @@ export default function BenchmarkPage() {
           addressesFilePath: `${scenario.code.toLowerCase()}.json`,
           stopsCount: scenario.stops,
           dwellTimePerStopMin: scenario.dwell,
-          includeExactMethods: scenario.stops <= 18,
+          includeExactMethods: true,
           saveToDatabase: true,
           batchId: activeBatch?.batchId && activeBatch.batchId !== 'db-consolidated' ? activeBatch.batchId : undefined
         })
@@ -835,6 +868,8 @@ export default function BenchmarkPage() {
       'Algoritmo',
       'Categoria',
       'Complexidade',
+      'Status',
+      'Gap Otimalidade (%)',
       'Tempo CPU (ms)',
       'Distância (km)',
       'Tempo de Rota (min)',
@@ -856,19 +891,22 @@ export default function BenchmarkPage() {
       m.algorithmName,
       m.algorithmType,
       m.complexity,
-      m.executionTimeMs.toFixed(3),
-      m.totalDistanceKm.toFixed(2),
-      m.totalDurationMin.toFixed(1),
-      m.efficiencyGainPct.toFixed(1),
-      m.avgSurfaceFactor.toFixed(2),
-      m.totalCost.toFixed(2)
+      m.status || (m.isValid === false ? 'INVALID' : 'VALID'),
+      m.optimalityGapPct != null ? m.optimalityGapPct.toFixed(2) : '—',
+      m.executionTimeMs != null ? m.executionTimeMs.toFixed(3) : 'N/A',
+      m.totalDistanceKm != null ? m.totalDistanceKm.toFixed(2) : 'N/A',
+      m.totalDurationMin != null ? m.totalDurationMin.toFixed(1) : 'N/A',
+      m.efficiencyGainPct != null ? m.efficiencyGainPct.toFixed(1) : 'N/A',
+      m.avgSurfaceFactor != null ? m.avgSurfaceFactor.toFixed(2) : 'N/A',
+      m.totalCost != null ? m.totalCost.toFixed(2) : 'N/A'
     ]);
 
     downloadCSV(`benchmark-orbi-${selectedScenarioFilter.toLowerCase()}-${Date.now()}.csv`, [header, ...rows]);
     toast('Relatório comparativo de benchmark exportado com sucesso', 'download');
   };
 
-  const fmtHours = (minutes: number) => {
+  const fmtHours = (minutes?: number | null) => {
+    if (minutes == null || isNaN(minutes)) return '—';
     const h = Math.floor(minutes / 60);
     const m = Math.round(minutes % 60);
     return h > 0 ? `${h}h ${m}m` : `${m}m`;
@@ -1166,10 +1204,12 @@ export default function BenchmarkPage() {
             href="#comparativo"
             label="Algoritmo em Evidência"
             color={evidenceModel ? MODEL_COLORS[evidenceModel.algorithmName] || COLORS.blue : COLORS.blue}
-            value={evidenceModel ? fmtHours(evidenceModel.totalDurationMin) : '—'}
+            value={evidenceModel ? (isModelValid(evidenceModel) ? fmtHours(evidenceModel.totalDurationMin) : 'Inviável') : '—'}
             sub={
               evidenceModel
-                ? `${evidenceModel.totalDistanceKm.toFixed(1)} km · ${evidenceModel.algorithmName.replace(/^\d+\.\s*/, '')}`
+                ? isModelValid(evidenceModel)
+                  ? `${(evidenceModel.totalDistanceKm || 0).toFixed(1)} km · ${evidenceModel.algorithmName.replace(/^\d+\.\s*/, '')}`
+                  : `Estouro RAM · ${evidenceModel.algorithmName.replace(/^\d+\.\s*/, '')}`
                 : 'Selecione na legenda'
             }
           />
@@ -1177,17 +1217,31 @@ export default function BenchmarkPage() {
             href="#comparativo"
             label="Tempo de Execução CPU"
             color={COLORS.violet}
-            value={evidenceModel ? `${num(evidenceModel.executionTimeMs, 2)} ms` : '—'}
-            sub="Tempo puro em RAM (sem IO/DB)"
+            value={
+              evidenceModel
+                ? isModelValid(evidenceModel)
+                  ? `${num(evidenceModel.executionTimeMs || 0, 2)} ms`
+                  : 'Estouro RAM'
+                : '—'
+            }
+            sub={evidenceModel && !isModelValid(evidenceModel) ? 'Proteção operacional contra OOM' : 'Tempo puro em RAM (sem IO/DB)'}
           />
           <Kpi
             href="#comparativo"
             label="Economia vs Linha de Base"
             color={COLORS.ok}
-            value={evidenceModel ? `-${evidenceModel.efficiencyGainPct.toFixed(1)}%` : '—'}
+            value={
+              evidenceModel
+                ? isModelValid(evidenceModel)
+                  ? `-${(evidenceModel.efficiencyGainPct || 0).toFixed(1)}%`
+                  : 'N/A'
+                : '—'
+            }
             sub={
               evidenceModel && currentScenarioSession
-                ? `-${(currentScenarioSession.initialDistanceKm - evidenceModel.totalDistanceKm).toFixed(1)} km`
+                ? isModelValid(evidenceModel)
+                  ? `-${(currentScenarioSession.initialDistanceKm - (evidenceModel.totalDistanceKm || 0)).toFixed(1)} km`
+                  : 'Resultado invalidado'
                 : '—'
             }
           />
@@ -1197,8 +1251,8 @@ export default function BenchmarkPage() {
             color={COLORS.teal}
             value={winningModel ? winningModel.algorithmName.replace(/^\d+\.\s*/, '') : '—'}
             sub={
-              winningModel
-                ? `${winningModel.totalDistanceKm.toFixed(1)} km · ${num(winningModel.executionTimeMs, 2)} ms`
+              winningModel && winningModel.totalDistanceKm != null
+                ? `${winningModel.totalDistanceKm.toFixed(1)} km · ${num(winningModel.executionTimeMs || 0, 2)} ms`
                 : '—'
             }
           />
@@ -1381,6 +1435,7 @@ export default function BenchmarkPage() {
                   <th className="r">Tempo CPU (ms)</th>
                   <th className="r">Distância (km)</th>
                   <th className="r">Tempo Rota</th>
+                  <th className="r">Gap (%)</th>
                   <th className="r">Economia (%)</th>
                   <th style={{ textAlign: 'center' }}>Desempenho</th>
                   <th style={{ textAlign: 'center' }}>Mapa</th>
@@ -1434,29 +1489,70 @@ export default function BenchmarkPage() {
                         <span className="muted small">{m.algorithmType}</span>
                       </td>
                       <td data-l="Tempo CPU" className="r" style={{ fontFamily: 'var(--mono)' }}>
-                        {m.executionTimeMs > 0 ? `${m.executionTimeMs.toFixed(2)} ms` : '0.00 ms'}
+                        {m.isValid === false ? (
+                          <span className="badge red" style={{ fontSize: 11 }}>Estouro RAM</span>
+                        ) : m.status === 'TRUNCATED' ? (
+                          <span className="badge amber" style={{ fontSize: 11 }} title={m.invalidReason || 'Truncado por limite de nós'}>
+                            {m.executionTimeMs != null ? `${m.executionTimeMs.toFixed(1)} ms*` : 'Truncado'}
+                          </span>
+                        ) : m.executionTimeMs != null && m.executionTimeMs > 0 ? (
+                          `${m.executionTimeMs.toFixed(2)} ms`
+                        ) : (
+                          '0.00 ms'
+                        )}
                       </td>
                       <td data-l="Distância" className="r" style={{ fontWeight: row.isWinner ? 700 : 500 }}>
-                        <span style={{ color: row.isWinner ? 'var(--green)' : undefined }}>
-                          {m.totalDistanceKm.toFixed(1)} km
-                        </span>
+                        {m.isValid === false || m.totalDistanceKm == null ? (
+                          <span className="muted small">Inviável</span>
+                        ) : (
+                          <span style={{ color: row.isWinner ? 'var(--green)' : undefined }}>
+                            {m.totalDistanceKm.toFixed(1)} km
+                          </span>
+                        )}
                       </td>
                       <td data-l="Tempo Rota" className="r">
-                        {fmtHours(m.totalDurationMin)}
+                        {m.isValid === false || m.totalDurationMin == null ? (
+                          <span className="muted small">—</span>
+                        ) : (
+                          fmtHours(m.totalDurationMin)
+                        )}
+                      </td>
+                      <td data-l="Gap" className="r">
+                        {m.isValid === false ? (
+                          <span className="muted small">—</span>
+                        ) : m.optimalityGapPct != null ? (
+                          m.optimalityGapPct === 0 ? (
+                            <span className="badge green" style={{ fontSize: 11 }}>0.0%</span>
+                          ) : (
+                            <span className="badge amber" style={{ fontSize: 11 }}>+{m.optimalityGapPct.toFixed(1)}%</span>
+                          )
+                        ) : (
+                          <span className="muted small">—</span>
+                        )}
                       </td>
                       <td data-l="Economia" className="r">
-                        {m.efficiencyGainPct > 0 ? (
+                        {m.isValid === false || m.efficiencyGainPct == null ? (
+                          <span className="muted small">N/A</span>
+                        ) : m.efficiencyGainPct > 0 ? (
                           <span className="badge green">-{m.efficiencyGainPct.toFixed(1)}%</span>
                         ) : (
                           <span className="muted small">Baseline</span>
                         )}
                       </td>
                       <td data-l="Desempenho" style={{ textAlign: 'center' }}>
-                        {row.isWinner ? (
+                        {m.isValid === false ? (
+                          <span className="badge red" title={m.invalidReason || 'Estouro de capacidade física de RAM teórica'}>
+                            ESTOURO RAM
+                          </span>
+                        ) : m.status === 'TRUNCATED' ? (
+                          <span className="badge amber" title={m.invalidReason || 'Truncado em 3M nós'}>
+                            TRUNCADO
+                          </span>
+                        ) : row.isWinner ? (
                           <span className="badge green">★ VENCEDOR CENÁRIO</span>
                         ) : row.isBaseline ? (
                           <span className="badge red">LINHA DE BASE</span>
-                        ) : m.efficiencyGainPct >= 40 ? (
+                        ) : m.efficiencyGainPct != null && m.efficiencyGainPct >= 40 ? (
                           <span className="badge blue">Alta Eficiência</span>
                         ) : (
                           <span className="muted small">—</span>
@@ -1492,6 +1588,7 @@ export default function BenchmarkPage() {
                   <th className="r">Tempo CPU (ms)</th>
                   <th className="r">Distância (km)</th>
                   <th className="r">Diferença km</th>
+                  <th className="r">Gap (%)</th>
                   <th className="r">Tempo de Rota</th>
                   <th className="r">Economia (%)</th>
                   <th style={{ textAlign: 'center' }}>Destaque</th>
@@ -1503,9 +1600,10 @@ export default function BenchmarkPage() {
                   const isBaseline = m.algorithmName.includes('Baseline');
                   const isWinner = winningModel ? winningModel.algorithmName === m.algorithmName : false;
                   const isSelected = evidenceModel ? evidenceModel.algorithmName === m.algorithmName : false;
-                  const diffKm = currentScenarioSession
-                    ? m.totalDistanceKm - currentScenarioSession.initialDistanceKm
-                    : 0;
+                  const diffKm =
+                    currentScenarioSession && m.totalDistanceKm != null && currentScenarioSession.initialDistanceKm != null
+                      ? m.totalDistanceKm - currentScenarioSession.initialDistanceKm
+                      : null;
 
                   return (
                     <tr
@@ -1549,7 +1647,13 @@ export default function BenchmarkPage() {
                         <code>{m.complexity}</code>
                       </td>
                       <td data-l="Tempo CPU" className="r" style={{ fontFamily: 'var(--mono)', fontWeight: 600 }}>
-                        {m.executionTimeMs > 0 ? (
+                        {m.isValid === false ? (
+                          <span className="badge red" style={{ fontSize: 11 }}>Estouro RAM</span>
+                        ) : m.status === 'TRUNCATED' ? (
+                          <span className="badge amber" style={{ fontSize: 11 }} title={m.invalidReason || 'Truncado por limite de nós'}>
+                            {m.executionTimeMs != null ? `${m.executionTimeMs.toFixed(1)} ms*` : 'Truncado'}
+                          </span>
+                        ) : m.executionTimeMs != null && m.executionTimeMs > 0 ? (
                           <span style={{ color: m.executionTimeMs < 10 ? 'var(--green)' : undefined }}>
                             {m.executionTimeMs.toFixed(2)} ms
                           </span>
@@ -1558,12 +1662,18 @@ export default function BenchmarkPage() {
                         )}
                       </td>
                       <td data-l="Distância" className="r" style={{ fontWeight: isWinner ? 700 : 500 }}>
-                        <span style={{ color: isWinner ? 'var(--green)' : undefined }}>
-                          {m.totalDistanceKm.toFixed(1)} km
-                        </span>
+                        {m.isValid === false || m.totalDistanceKm == null ? (
+                          <span className="muted small">Inviável</span>
+                        ) : (
+                          <span style={{ color: isWinner ? 'var(--green)' : undefined }}>
+                            {m.totalDistanceKm.toFixed(1)} km
+                          </span>
+                        )}
                       </td>
                       <td data-l="Diferença km" className="r" style={{ fontFamily: 'var(--mono)', fontSize: 12 }}>
-                        {diffKm < 0 ? (
+                        {diffKm == null ? (
+                          <span className="muted small">—</span>
+                        ) : diffKm < 0 ? (
                           <span style={{ color: 'var(--green)' }}>{diffKm.toFixed(1)} km</span>
                         ) : diffKm > 0 ? (
                           <span style={{ color: 'var(--red)' }}>+{diffKm.toFixed(1)} km</span>
@@ -1571,22 +1681,49 @@ export default function BenchmarkPage() {
                           <span className="muted">Ref</span>
                         )}
                       </td>
+                      <td data-l="Gap" className="r">
+                        {m.isValid === false ? (
+                          <span className="muted small">—</span>
+                        ) : m.optimalityGapPct != null ? (
+                          m.optimalityGapPct === 0 ? (
+                            <span className="badge green" style={{ fontSize: 11 }}>0.0%</span>
+                          ) : (
+                            <span className="badge amber" style={{ fontSize: 11 }}>+{m.optimalityGapPct.toFixed(1)}%</span>
+                          )
+                        ) : (
+                          <span className="muted small">—</span>
+                        )}
+                      </td>
                       <td data-l="Tempo Rota" className="r" style={{ fontWeight: 500 }}>
-                        {fmtHours(m.totalDurationMin)}
+                        {m.isValid === false || m.totalDurationMin == null ? (
+                          <span className="muted small">—</span>
+                        ) : (
+                          fmtHours(m.totalDurationMin)
+                        )}
                       </td>
                       <td data-l="Economia" className="r">
-                        {m.efficiencyGainPct > 0 ? (
+                        {m.isValid === false || m.efficiencyGainPct == null ? (
+                          <span className="muted small">N/A</span>
+                        ) : m.efficiencyGainPct > 0 ? (
                           <span className="badge green">-{m.efficiencyGainPct.toFixed(1)}%</span>
                         ) : (
                           <span className="muted small">Baseline</span>
                         )}
                       </td>
                       <td data-l="Destaque" style={{ textAlign: 'center' }}>
-                        {isWinner ? (
+                        {m.isValid === false ? (
+                          <span className="badge red" title={m.invalidReason || 'Estouro de capacidade física de RAM teórica'}>
+                            ESTOURO RAM
+                          </span>
+                        ) : m.status === 'TRUNCATED' ? (
+                          <span className="badge amber" title={m.invalidReason || 'Truncado em 3M nós'}>
+                            TRUNCADO
+                          </span>
+                        ) : isWinner ? (
                           <span className="badge green">★ MELHOR MODELO</span>
                         ) : isBaseline ? (
                           <span className="badge red">LINHA DE BASE</span>
-                        ) : m.efficiencyGainPct >= 40 ? (
+                        ) : m.efficiencyGainPct != null && m.efficiencyGainPct >= 40 ? (
                           <span className="badge blue">Alta Eficiência</span>
                         ) : (
                           <span className="muted small">—</span>
