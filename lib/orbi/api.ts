@@ -129,8 +129,9 @@ export function enableApi(P: any) {
     const stops = (deliveries || []).slice().sort((a, b) => a.order - b.order).map(d => stopFrom(d, r));
     const firstPick = stops.map(s => s.pickedUpAt).filter(Boolean).sort()[0] || null;
     const created = iso(r.createdAt);
+    const routeCode = r.name && String(r.name).trim() ? String(r.name).trim() : code(r.id);
     return {
-      id: String(r.id), apiId: r.id, code: code(r.id), driverId: drv ? drv.userId : null, driverName: r.driverName || (drv && drv.driverName) || null,
+      id: String(r.id), apiId: r.id, name: r.name || null, code: routeCode, driverId: drv ? drv.userId : null, driverName: r.driverName || (drv && drv.driverName) || null,
       status: RS[r.status] || r.status, window: created ? `Criada em ${new Date(created).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })} às ${new Date(created).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}` : '—',
       createdAt: created, assignedAt: iso(r.assignedAt), startedAt: r.status === 'IN_PROGRESS' || r.status === 'COMPLETED' ? (firstPick || iso(r.assignedAt)) : null, finishedAt: iso(r.finalizedAt),
       apiDistance: r.totalDistance || 0, apiCost: r.totalCost || 0, stops, priority: null
