@@ -48,15 +48,11 @@ export default function OverviewPage() {
         <Kpi label="Taxa de sucesso" color={COLORS.blue} value={`${successToday}%`} sub={`meta ${goals.successRate}%`} spark={successSeries(h14).concat([successToday])} href="/reports"
           delta={workDays(h7).length ? successToday - Math.round(succ7) : null} deltaUnit=" p.p." tip={`<b>Entregues ÷ paradas tratadas</b><div>Média dos últimos 7 dias: ${Math.round(succ7)}%</div>`} />
         <Kpi label="Rotas em andamento" color={COLORS.sky} value={<>{t.live}<Of>/{t.routes}</Of></>} sub={t.delayed ? plural(t.delayed, 'atrasada', 'atrasadas') : 'nenhuma atrasada'} href="/live" foot={`${activeDrivers} de ${P.drivers().length} motoristas na operação`} />
-        <Kpi label="Ocorrências abertas" color={COLORS.cancel} value={`${occ.length}`} sub={`${P.API ? '' : sos.length + ' SOS · '}${plural(t.skipped + t.cancelled, 'parada com problema', 'paradas com problema')}`} href="/occurrences" goodUp={false} foot={occ.length ? 'Ver e resolver' : 'Nenhuma pendência'} />
-        {P.API
-          ? <Kpi label="Rotas concluídas hoje" color={COLORS.violet} value={`${P.S.routes.filter((r: any) => P.isToday(r) && r.status === 'COMPLETED').length}`} sub={`de ${t.routes} rotas`} href="/routes" />
-          : <Kpi label="Pontualidade · 7 dias" color={COLORS.violet} value={`${pct(h7.reduce((a: number, d: any) => a + d.onTime, 0), h7.reduce((a: number, d: any) => a + d.routes, 0) || 1)}%`} sub={`meta ${goals.onTime}%`} href="/reports" spark={h14.map((d: any) => pct(d.onTime, d.routes || 1))} foot={`Hoje: ${t.onTimePct}% das rotas iniciadas no horário`} tip="<b>Rotas iniciadas até 20 min após o início da janela</b>" />}
+        <Kpi label="Ocorrências abertas" color={COLORS.cancel} value={`${occ.length}`} sub={plural(t.skipped + t.cancelled, 'parada com problema', 'paradas com problema')} href="/occurrences" goodUp={false} foot={occ.length ? 'Ver e resolver' : 'Nenhuma pendência'} />
+        <Kpi label="Rotas concluídas hoje" color={COLORS.violet} value={`${P.S.routes.filter((r: any) => P.isToday(r) && r.status === 'COMPLETED').length}`} sub={`de ${t.routes} rotas`} href="/routes" />
         <Kpi label="Distância prevista" color={COLORS.teal} value={<>{num(t.km, 1)}<Of> km</Of></>} sub={`média 7d ${num(avg7('km'), 0)} km`} href="/reports" spark={h14.map((d: any) => d.km).concat([t.km])} />
         <Kpi label="Custo estimado hoje" color={COLORS.skip} value={money(t.cost)} sub={t.delivered ? `${money(t.cost / Math.max(1, t.stops))} por parada` : ''} href="/reports" tip="<b>Estimativa</b><div>km × R$ 1,85 + R$ 2,50 por parada</div>" />
-        {P.API
-          ? <Kpi label="Motoristas" color={COLORS.amber} value={<>{activeDrivers}<Of>/{P.drivers().length}</Of></>} sub="em rota ou escalados" href="/drivers" />
-          : <Kpi label="Avaliação média" color={COLORS.amber} value={<>{num(avg(P.drivers().map((d: any) => d.rating || 0)), 1)}<Of> / 5</Of></>} sub={`${P.S.reviews.length} avaliações recentes`} href="/drivers" />}
+        <Kpi label="Motoristas" color={COLORS.amber} value={<>{activeDrivers}<Of>/{P.drivers().length}</Of></>} sub="em rota ou escalados" href="/drivers" />
       </div>
       <div className="grid g-2-1">
         <section className="card"><div className="card-head"><h3>Entregas nos últimos 14 dias</h3><Link className="link" href="/reports">Ver relatório <Icon name="chev" size="xs" /></Link></div>
@@ -82,7 +78,7 @@ export default function OverviewPage() {
         <section className="card"><div className="card-head"><h3>Ranking de motoristas · 7 dias</h3><Link className="link" href="/drivers">Motoristas <Icon name="chev" size="xs" /></Link></div>
           <div className="rank">{rank.map((x: any, i: number) => (
             <Link key={x.d.id} className="rank-row" href={'/drivers/' + x.d.id}><span className="pos">{i + 1}º</span><span className="avatar sm">{initials(x.d.name)}</span>
-              <span className="rk-main"><b>{x.d.name}</b><small>{x.delivered} entregas{P.API ? '' : ` · nota ${num(x.d.rating || 0, 1)}`}</small></span><span className="rk-val"><b>{x.success}%</b><small>sucesso</small></span></Link>
+              <span className="rk-main"><b>{x.d.name}</b><small>{x.delivered} entregas</small></span><span className="rk-val"><b>{x.success}%</b><small>sucesso</small></span></Link>
           ))}</div></section>
       </div>
     </PageFrame>

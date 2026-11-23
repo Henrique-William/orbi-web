@@ -1,8 +1,7 @@
 /*
  * Configuração do portal.
- *   Modo padrão: 'api'  -> usa a Orbi API real (os mesmos dados do app Android).
- *   Modo 'demo'          -> dados de demonstração no navegador, sem internet. Abra qualquer página com ?demo.
- *   apiBase: '/api'      -> o Next.js repassa /api/* para a Orbi API (ver next.config.ts), evitando bloqueio de CORS.
+ * Modo padrão: exclusivo Orbi API (backend oficial).
+ * apiBase: '/api' -> o Next.js repassa /api/* para a Orbi API (ver next.config.ts), evitando bloqueio de CORS.
  */
 export const CONFIG = {
   apiBase: '/api',
@@ -15,7 +14,6 @@ export const CONFIG = {
   apiTimesUtc: true
 };
 
-const MODE_KEY = 'orbi-modo';
 const AUTO_KEY = 'orbi-atualizacao-auto';
 
 /** Intervalo da atualização automática em segundos (0 = só manual). */
@@ -27,19 +25,11 @@ export function saveAutoRefresh(seconds: number) {
   try { localStorage.setItem(AUTO_KEY, String(seconds)); } catch { /* ignora */ }
 }
 
-/** Decide o modo uma vez por aba: ?demo liga a demonstração; ?api volta para a API. */
-export function resolveMode(): 'api' | 'demo' {
-  if (typeof window === 'undefined') return 'api';
-  try {
-    const q = new URLSearchParams(window.location.search);
-    if (q.has('demo')) sessionStorage.setItem(MODE_KEY, 'demo');
-    if (q.has('api')) sessionStorage.removeItem(MODE_KEY);
-    return sessionStorage.getItem(MODE_KEY) === 'demo' ? 'demo' : 'api';
-  } catch {
-    return 'api';
-  }
+/** Modo oficial de operação: sempre 'api'. */
+export function resolveMode(): 'api' {
+  return 'api';
 }
 
 export function leaveDemo() {
-  try { sessionStorage.removeItem(MODE_KEY); } catch { /* ignora */ }
+  /* No-op para compatibilidade */
 }

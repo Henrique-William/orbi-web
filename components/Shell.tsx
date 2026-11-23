@@ -11,14 +11,18 @@ import { openOccurrences, Empty } from './common';
 import { useOrbi } from '@/lib/orbi/useOrbi';
 import { first, initials, rel, hhmm, esc, ROUTE_STATUS } from '@/lib/orbi/format';
 import { openModal, closeModal, setTheme, toast } from '@/lib/orbi/ui';
-import { leaveDemo } from '@/lib/orbi/config';
-import { newDriverModal } from './modals';
 
 export const NAV: [string, string, string, string][] = [
-  ['overview', 'Visão geral', 'grid', 'Operação'], ['live', 'Ao vivo', 'radar', 'Operação'], ['routes', 'Rotas', 'route', 'Operação'], ['occurrences', 'Ocorrências', 'alert', 'Operação'],
-  ['drivers', 'Motoristas', 'users', 'Equipe'], ['messages', 'Mensagens', 'chat', 'Equipe'], ['reports', 'Relatórios', 'bars', 'Análise'], ['benchmark', 'Benchmark', 'chart', 'Análise'], ['settings', 'Configurações', 'settings', 'Conta']
+  ['overview', 'Visão geral', 'grid', 'Operação'],
+  ['live', 'Ao vivo', 'radar', 'Operação'],
+  ['routes', 'Rotas', 'route', 'Operação'],
+  ['occurrences', 'Ocorrências', 'alert', 'Operação'],
+  ['drivers', 'Motoristas', 'users', 'Equipe'],
+  ['reports', 'Relatórios', 'bars', 'Análise'],
+  ['benchmark', 'Benchmark', 'chart', 'Análise'],
+  ['settings', 'Configurações', 'settings', 'Conta']
 ];
-const navItems = (P: any) => NAV.filter(n => !(P.API && n[0] === 'messages'));
+const navItems = () => NAV;
 
 /** Converte o link de uma notificação (formato do app) em rota do portal. */
 export function portalLink(link?: string) {
@@ -72,9 +76,12 @@ export default function PageFrame({ active, title, sub, path, actions, noHead, c
   return (
     <div className="app">
       <aside className={`side ${sideOpen ? 'open' : ''}`}>
-        <Link className="brand" href="/overview" onClick={close}><span className="brand-logo"><Logo /></span><span><b>Orbi</b><small>Portal da empresa</small></span></Link>
+        <Link className="brand" href="/overview" onClick={close}>
+          <span className="brand-logo"><Logo /></span>
+          <span><b>ORBI <span className="brand-sub">PORTAL</span></b><small>Gestão Operacional</small></span>
+        </Link>
         <nav className="side-nav">
-          {navItems(P).map((n, i, all) => (
+          {navItems().map((n, i, all) => (
             <span key={n[0]} style={{ display: 'contents' }}>
               {(!i || all[i - 1][3] !== n[3]) && <div className="side-group">{n[3]}</div>}
               <Link href={'/' + n[0]} className={active === n[0] ? 'on' : ''} onClick={close}>
@@ -84,10 +91,10 @@ export default function PageFrame({ active, title, sub, path, actions, noHead, c
           ))}
         </nav>
         <div className="side-foot">
-          {P.API
-            ? <a className="side-app" href="/login?demo" target="_blank" rel="noopener"><Icon name="eye" size="sm" /><span>Ver modo demonstração</span></a>
-            : <a className="side-app" href="/login?api" onClick={() => leaveDemo()}><Icon name="link" size="sm" /><span>Sair da demonstração</span></a>}
-          <div className="side-co"><Icon name="building" size="sm" /><span><b>{P.S.company.name}</b><small>{P.drivers().length} motoristas · {P.admins().length} gestores</small></span></div>
+          <div className="side-co">
+            <Icon name="building" size="sm" />
+            <span><b>{P.S.company.name}</b><small>{P.drivers().length} motoristas · {P.admins().length} gestores</small></span>
+          </div>
         </div>
       </aside>
       <div className={`side-scrim ${sideOpen ? 'on' : ''}`} onClick={close} />
@@ -125,7 +132,7 @@ export default function PageFrame({ active, title, sub, path, actions, noHead, c
         {[NAV[0], NAV[1], NAV[2], NAV[3]].map(n => (
           <Link key={n[0]} href={'/' + n[0]} className={active === n[0] ? 'on' : ''}><Icon name={n[2]} /><span>{n[1]}</span>{b[n[0]] ? <em>{b[n[0]]}</em> : null}</Link>
         ))}
-        <button className={['drivers', 'reports', 'messages', 'settings'].includes(active) ? 'on' : ''} onClick={() => setSideOpen(true)}><Icon name="menu" /><span>Mais</span>{b.messages ? <em>{b.messages}</em> : null}</button>
+        <button className={['drivers', 'reports', 'benchmark', 'settings'].includes(active) ? 'on' : ''} onClick={() => setSideOpen(true)}><Icon name="menu" /><span>Mais</span></button>
       </nav>
       {pop && <Popover pop={pop} onClose={() => setPop(null)}>{pop.kind === 'notif' ? <NotifPanel P={P} onClose={() => setPop(null)} /> : <UserMenu P={P} onClose={() => setPop(null)} />}</Popover>}
     </div>
@@ -183,7 +190,6 @@ function shortcuts() {
 
 function SyncPill({ P }: { P: any }) {
   const flashing = P.sync.flash;
-  if (!P.API) return <span className="sync-pill" data-tip="<b>Modo demonstração</b><div>Dados locais deste navegador</div>"><i /><span>Demonstração</span></span>;
   const st = P.sync.state;
   const auto = P.autoRefresh();
   const label = flashing ? 'Atualizado agora' : st === 'waking' ? 'Acordando servidor…' : st === 'error' ? 'Sem conexão' : st === 'loading' ? 'Conectando…' : st === 'syncing' ? 'Atualizando…' : auto ? 'Sincronizado' : `Atualizado às ${hhmm(P.sync.last)}`;
@@ -203,7 +209,6 @@ function SessionBanner({ P }: { P: any }) {
   const router = useRouter();
   const [, force] = useState(0);
   useEffect(() => { const t = setInterval(() => force(x => x + 1), 20000); return () => clearInterval(t); }, []);
-  if (!P.API) return null;
   const left = P.sessionExpiresIn() * 1000;
   if (left > 3 * 60000 || left <= 0) return null;
   return (
@@ -215,9 +220,8 @@ function SessionBanner({ P }: { P: any }) {
 /** Busca rápida (Ctrl K): páginas, ações, rotas e motoristas. */
 export function palette(P: any, router: any) {
   const items: any[] = [];
-  navItems(P).forEach(n => items.push({ t: n[1], s: 'Página', icon: n[2], go: '/' + n[0] }));
+  navItems().forEach(n => items.push({ t: n[1], s: 'Página', icon: n[2], go: '/' + n[0] }));
   items.push({ t: 'Nova rota', s: 'Ação', icon: 'plus', go: '/routes/new' });
-  if (!P.API) items.push({ t: 'Novo motorista', s: 'Ação', icon: 'users', run: () => newDriverModal(P, router) });
   items.push({ t: 'Alternar tema claro/escuro', s: 'Ação', icon: 'moon', run: () => { setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'); P.emit(); } },
     { t: 'Imprimir relatório', s: 'Ação', icon: 'printer', go: '/reports', after: () => setTimeout(() => window.print(), 600) });
   P.S.routes.forEach((r: any) => { const d = P.user(r.driverId); items.push({ t: `${r.code} · ${d ? d.name : 'sem motorista'}`, s: ROUTE_STATUS[r.status][0] + ' · ' + r.window, icon: 'route', go: '/routes/' + r.id, k: r.stops.map(P.stopAddr).join(' ') }); });

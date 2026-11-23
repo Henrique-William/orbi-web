@@ -14,12 +14,15 @@ import { hhmm, rel, fmtMin, plural, initials, OWNERSHIP } from '@/lib/orbi/forma
 
 export default function SettingsPage() {
   const P = useOrbi();
-  const [st, set] = usePageState('config', { tab: 'company' });
-  const TABS: [string, string, string][] = P.API
-    ? [['connection', 'Conexão com a API', 'link'], ['team', 'Equipe de gestão', 'users'], ['goals', 'Metas', 'trend'], ['data', 'Aparência', 'settings']]
-    : [['company', 'Empresa', 'building'], ['fleet', 'Frota e seguro', 'truck'], ['team', 'Equipe de gestão', 'users'], ['goals', 'Metas', 'trend'], ['integrations', 'Integrações', 'link'], ['data', 'Aparência e dados', 'settings']];
+  const [st, set] = usePageState('config', { tab: 'connection' });
+  const TABS: [string, string, string][] = [
+    ['connection', 'Conexão com a API', 'link'],
+    ['team', 'Equipe de gestão', 'users'],
+    ['goals', 'Metas operacionais', 'trend'],
+    ['data', 'Aparência', 'settings']
+  ];
   const tab = TABS.some(t => t[0] === st.tab) ? st.tab : TABS[0][0];
-  const Body = ({ connection: Connection, company: Company, fleet: Fleet, team: Team, goals: Goals, integrations: Integrations, data: Appearance } as any)[tab];
+  const Body = ({ connection: Connection, team: Team, goals: Goals, data: Appearance } as any)[tab];
   return (
     <PageFrame active="settings" title="Configurações" sub={P.S.company.name}>
       <div className="settings">
@@ -149,13 +152,9 @@ function Appearance({ P }: { P: any }) {
   const [pref, setPref] = useState(currentThemePref());
   return (
     <>
-      <label className="lbl">Tema</label>
-      <div className="seg">{[['light', 'Claro'], ['dark', 'Escuro'], ['auto', 'Automático']].map(t => <button key={t[0]} className={pref === t[0] ? 'on' : ''} onClick={() => { setTheme(t[0]); setPref(t[0]); P.emit(); }}>{t[1]}</button>)}</div>
-      {!P.API && <>
-        <h3 className="h3">Dados de demonstração</h3>
-        <p className="muted">Volta rotas, motoristas, conversas e alertas ao estado inicial.</p>
-        <button className="btn danger" onClick={() => confirmDialog('Restaurar dados?', 'Tudo volta ao estado inicial da demonstração.', 'Restaurar', true, () => { P.resetDemo(); toast('Dados restaurados', 'refresh'); })}><Icon name="refresh" size="sm" /> Restaurar dados de demonstração</button>
-      </>}
+      <label className="lbl">Tema da interface</label>
+      <p className="muted" style={{ marginTop: 0 }}>Selecione o modo de exibição conforme a luminosidade do ambiente operacional.</p>
+      <div className="seg">{[['light', 'Claro (Brand Book)'], ['dark', 'Escuro (Carbon)'], ['auto', 'Automático']].map(t => <button key={t[0]} className={pref === t[0] ? 'on' : ''} onClick={() => { setTheme(t[0]); setPref(t[0]); P.emit(); }}>{t[1]}</button>)}</div>
     </>
   );
 }

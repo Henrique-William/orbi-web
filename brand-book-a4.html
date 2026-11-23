@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<title>Orbi — Brand Book (A4 Minimal Edition)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary:      #2557D6;
+    --primary-soft: #EEF3FD;
+    --primary-line: #C9D7F7;
+    --black:        #0A0A0A;
+    --bg:           #F7F7F5;
+    --surface:      #FFFFFF;
+    --surface-2:    #F0F0EE;
+    --border:       #E5E5E3;
+    --text:         #0A0A0A;
+    --muted:        #666666;
+    --display-font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    --mono-font:    'JetBrains Mono', 'Cascadia Mono', ui-monospace, Consolas, monospace;
+  }
+
+  @page { size: A4; margin: 0; }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--display-font);
+    padding: 15mm 15mm 12mm;
+    display: flex;
+    flex-direction: column;
+    gap: 6.5mm;
+    position: relative;
+    overflow: hidden;
+    font-feature-settings: "cv11", "ss01";
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10mm;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 4.5mm 5.5mm;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand-logo-box {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: var(--primary); color: #FFFFFF;
+    display: inline-grid; place-items: center; flex: none;
+  }
+  .brand-logo-box svg { width: 28px; height: 28px; }
+  .brand h1 { margin: 0; font-size: 21px; font-weight: 800; letter-spacing: -0.025em; color: var(--text); }
+  .brand .sub { margin: 2px 0 0; font-size: 9.5px; color: var(--muted); font-family: var(--mono-font); letter-spacing: 1.2px; text-transform: uppercase; }
+  .brand-meta { text-align: right; font-family: var(--mono-font); font-size: 9px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; line-height: 1.5; }
+  .brand-meta .tag { color: var(--primary); font-weight: 700; }
+
+  .section-label {
+    font-family: var(--mono-font);
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    color: var(--primary);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  .colors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .swatch { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--surface); }
+  .swatch .fill {
+    height: 23mm; padding: 3mm 3.5mm;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    font-family: var(--mono-font); font-size: 8.5px;
+  }
+  .swatch .meta { padding: 8px 10px; background: var(--surface); }
+  .swatch .tier { font-size: 11px; font-weight: 700; display: block; color: var(--text); }
+  .swatch .hex { font-family: var(--mono-font); font-size: 9.5px; color: var(--text); font-weight: 600; display: block; margin-top: 2px; }
+  .swatch .use { font-size: 9px; color: var(--muted); line-height: 1.38; margin-top: 3px; display: block; }
+
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 5.5mm; }
+  .card { border: 1px solid var(--border); border-radius: 8px; padding: 5mm; background: var(--surface); }
+
+  .type-display { font-size: 25px; font-weight: 800; letter-spacing: -0.025em; color: var(--text); line-height: 1.08; margin: 0; font-variant-numeric: tabular-nums; }
+  .type-body { font-size: 10px; color: var(--muted); line-height: 1.5; margin: 2.5mm 0 0; }
+  .type-mono { font-family: var(--mono-font); font-size: 8.8px; color: var(--text); background: var(--bg); border: 1px solid var(--border); padding: 4px 8px; border-radius: 4px; letter-spacing: 0.4px; margin-top: 3mm; display: inline-block; }
+
+  .principles ul { margin: 0; padding: 0 0 0 4mm; font-size: 9.8px; color: var(--muted); line-height: 1.52; display: flex; flex-direction: column; gap: 3.5px; }
+  .principles li b { color: var(--text); }
+  .principles li::marker { color: var(--primary); }
+
+  .products { display: grid; grid-template-columns: repeat(6, 1fr); gap: 3.5mm; }
+  .product { border: 1px solid var(--border); border-radius: 8px; padding: 3.8mm 2.5mm; background: var(--surface); display: flex; flex-direction: column; align-items: center; text-align: center; gap: 5px; }
+  .product .dot { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); }
+  .product .name { font-size: 9.8px; font-weight: 700; color: var(--text); }
+  .product .hex { font-family: var(--mono-font); font-size: 8.2px; color: var(--muted); }
+  .product .role { font-size: 8px; color: var(--muted); line-height: 1.25; }
+
+  .arch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .arch-card { border: 1px solid var(--border); border-radius: 8px; padding: 4mm 4.5mm; background: var(--surface); display: flex; flex-direction: column; gap: 4px; }
+  .arch-card .a-head { display: flex; align-items: center; justify-content: space-between; }
+  .arch-card b { font-size: 10.5px; color: var(--text); }
+  .arch-card .a-tag { font-family: var(--mono-font); font-size: 8px; color: var(--primary); background: var(--primary-soft); border: 1px solid var(--primary-line); padding: 1px 6px; border-radius: 4px; font-weight: 600; }
+  .arch-card p { margin: 0; font-size: 9px; color: var(--muted); line-height: 1.42; }
+  .arch-card code { font-family: var(--mono-font); font-size: 8.2px; color: var(--text); background: var(--bg); border: 1px solid var(--border); padding: 0.5px 4px; border-radius: 3px; }
+
+  .wordmarks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
+  .wm { border: 1px solid var(--border); border-radius: 8px; padding: 4.5mm 5mm; background: var(--surface); display: flex; flex-direction: column; gap: 5px; min-height: 26mm; justify-content: center; }
+  .wm.dark { background: var(--black); border-color: var(--black); color: #FFFFFF; }
+  .wm .lockup { display: flex; align-items: center; gap: 9px; }
+  .wm .mini-logo { width: 26px; height: 26px; border-radius: 6px; background: var(--primary); color: #fff; display: inline-grid; place-items: center; flex: none; }
+  .wm .mini-logo svg { width: 18px; height: 18px; }
+  .wm .name { font-weight: 800; font-size: 16px; letter-spacing: 2.5px; color: var(--text); text-transform: uppercase; }
+  .wm .name .lo { font-weight: 300; color: var(--muted); }
+  .wm .tag { font-size: 9px; color: var(--muted); line-height: 1.35; margin: 0; }
+  .wm .mono { font-family: var(--mono-font); font-size: 8px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: auto; display: block; }
+
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-top: auto;
+    padding-top: 3.5mm;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono-font);
+    font-size: 8px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEAD -->
+  <div class="head">
+    <div class="brand">
+      <span class="brand-logo-box" aria-hidden="true">
+        <svg viewBox="31 31 46 46">
+          <circle cx="54" cy="54" r="17" fill="none" stroke="currentColor" stroke-width="4.5" />
+          <circle cx="54" cy="54" r="6.5" fill="currentColor" />
+          <circle cx="67.5" cy="40.5" r="4.5" fill="currentColor" />
+        </svg>
+      </span>
+      <div>
+        <h1>Orbi Brand Book</h1>
+        <p class="sub">Orbi Web · Orbi App · Minimal Blue & Monochrome</p>
+      </div>
+    </div>
+    <div class="brand-meta">
+      v2.0 · Minimal Edition<br/>
+      <span class="tag">60% Off-White · 30% Black · 10% Orbi Blue</span>
+    </div>
+  </div>
+
+  <!-- COLOR HIERARCHY -->
+  <div>
+    <div class="section-label">01 · Color Hierarchy (Azul Orbi + Monocromo)</div>
+    <div class="colors">
+      <div class="swatch">
+        <div class="fill" style="background:var(--primary); color:rgba(255,255,255,0.92);"><span>10% DESTAQUE</span><span>--primary</span></div>
+        <div class="meta">
+          <span class="tier" style="color:var(--primary)">Primary · Azul Orbi</span>
+          <span class="hex">#2557D6 · Hover #1D46B0 · Soft #EEF3FD</span>
+          <span class="use">Único sotaque cromático: marca, botões primários, foco, polilinha da rota e GPS.</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="fill" style="background:var(--black); color:rgba(255,255,255,0.92);"><span>30% CONTRASTE</span><span>--ink / --black</span></div>
+        <div class="meta">
+          <span class="tier">Secondary · Preto Carbono</span>
+          <span class="hex">#0A0A0A · Muted #666666 · Faint #999999</span>
+          <span class="use">Tipografia principal, valores de KPIs, ícones lineares e modo noturno de navegação.</span>
+        </div>
+      </div>
+      <div class="swatch">
+        <div class="fill" style="background:var(--bg); color:var(--text); border-bottom:1px solid var(--border);"><span>60% BASE NEUTRA</span><span>--bg / --surface</span></div>
+        <div class="meta">
+          <span class="tier">Neutral · Off-White & Branco</span>
+          <span class="hex">#F7F7F5 (Canvas) · #FFFFFF (Cards)</span>
+          <span class="use">Fundo Off-White suave de baixa fadiga visual com superfícies brancas e bordas #E5E5E3.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY + PRINCIPLES -->
+  <div class="twocol">
+    <div>
+      <div class="section-label">02 · Typography</div>
+      <div class="card">
+        <p class="type-display">Inter Sans<br/>ROTA-SP-01 · 94,8%</p>
+        <p class="type-body">
+          <b>Inter</b> (400, 500, 600, 700) com OpenType <code>cv11</code>, <code>ss01</code> e algarismos tabulares (<code>tabular-nums</code> / <code>tnum</code>) para alinhamento perfeito de KPIs e durações.
+        </p>
+        <span class="type-mono">JetBrains Mono · Códigos · Ctrl K · Coordenadas</span>
+      </div>
+    </div>
+    <div>
+      <div class="section-label">03 · Design Principles</div>
+      <div class="card principles">
+        <ul>
+          <li><b>Um único sotaque de cor:</b> Estrutura 100% monocromática (Off-White <code>#F7F7F5</code>, Branco <code>#FFFFFF</code> e Preto <code>#0A0A0A</code>) com destaque exclusivo em Azul Orbi (<code>#2557D6</code>).</li>
+          <li><b>Hierarquia por contraste e peso:</b> Distinção visual construída por tipografia, espaço em branco e linhas de 1px em vez de múltiplos blocos coloridos.</li>
+          <li><b>Precisão tabular:</b> Números monoespaçados em todas as métricas, cronômetros e tabelas operacionais.</li>
+          <li><b>Ergonomia Web ↔ Mobile:</b> Alta densidade e atalhos no portal; alvos de 48dp–56dp e gestos <i>Slide</i> no app.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- TONAL SCALE (MONOCHROME + BLUE) -->
+  <div>
+    <div class="section-label">04 · Tonal Scale (Monochrome & Blue Tints)</div>
+    <div class="products">
+      <div class="product">
+        <div class="dot" style="background:#FFFFFF;"></div>
+        <div class="name">Pure White</div>
+        <div class="hex">#FFFFFF</div>
+        <div class="role">Cards & Modais</div>
+      </div>
+      <div class="product">
+        <div class="dot" style="background:#F7F7F5;"></div>
+        <div class="name">Off-White</div>
+        <div class="hex">#F7F7F5</div>
+        <div class="role">Canvas Principal</div>
+      </div>
+      <div class="product">
+        <div class="dot" style="background:#E5E5E3;"></div>
+        <div class="name">Hairline</div>
+        <div class="hex">#E5E5E3</div>
+        <div class="role">Divisores 1px</div>
+      </div>
+      <div class="product">
+        <div class="dot" style="background:#666666; border-color:#666666;"></div>
+        <div class="name">Muted Grey</div>
+        <div class="hex">#666666</div>
+        <div class="role">Texto Secundário</div>
+      </div>
+      <div class="product">
+        <div class="dot" style="background:#0A0A0A; border-color:#0A0A0A;"></div>
+        <div class="name">Carbon Black</div>
+        <div class="hex">#0A0A0A</div>
+        <div class="role">Tinta & Dark UI</div>
+      </div>
+      <div class="product">
+        <div class="dot" style="background:#2557D6; box-shadow: 0 0 0 3px #EEF3FD; border-color:#C9D7F7;"></div>
+        <div class="name" style="color:#2557D6">Orbi Blue</div>
+        <div class="hex">#2557D6 · #EEF3FD</div>
+        <div class="role">Ação & Rota Ativa</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLATFORM ARCHITECTURE & TOKENS -->
+  <div>
+    <div class="section-label">05 · Ecosystem UI Patterns</div>
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="a-head"><b>Orbi Web (Portal Gestor)</b><span class="a-tag">Next.js</span></div>
+        <p>Fundo Off-White <code>#F7F7F5</code>, cartões <code>#FFFFFF</code> com bordas <code>#E5E5E3</code>, faixa de KPIs contínua e busca <code>Ctrl K</code>.</p>
+      </div>
+      <div class="arch-card">
+        <div class="a-head"><b>Orbi App (Motorista)</b><span class="a-tag">Android M3</span></div>
+        <p>Painel de manobra em Preto Carbono <code>#0A0A0A</code>, botões primários <code>56dp</code> em <code>#2557D6</code> e <i>Slide-to-Confirm</i>.</p>
+      </div>
+      <div class="arch-card">
+        <div class="a-head"><b>Map & Real-Time Sync</b><span class="a-tag">GeoJSON</span></div>
+        <p>Mapa monocromático claro com vias brancas e traçado vetorial da rota destacado em Azul Orbi <code>#2557D6</code>.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORDMARKS -->
+  <div>
+    <div class="section-label">06 · Wordmarks · Lockups</div>
+    <div class="wordmarks">
+      <div class="wm">
+        <div class="lockup">
+          <span class="mini-logo">
+            <svg viewBox="31 31 46 46">
+              <circle cx="54" cy="54" r="17" fill="none" stroke="currentColor" stroke-width="4.5" />
+              <circle cx="54" cy="54" r="6.5" fill="currentColor" />
+              <circle cx="67.5" cy="40.5" r="4.5" fill="currentColor" />
+            </svg>
+          </span>
+          <span class="name">ORBI</span>
+        </div>
+        <p class="tag">Símbolo orbital azul (#2557D6) + wordmark em Preto Carbono (#0A0A0A).</p>
+        <span class="mono">Mark + wordmark</span>
+      </div>
+      <div class="wm">
+        <div class="lockup"><span class="name">ORBI<span class="lo">PORTAL</span></span></div>
+        <p class="tag">Assinatura tipográfica monocromática para o painel web e relatórios.</p>
+        <span class="mono">Split weight lockup</span>
+      </div>
+      <div class="wm dark">
+        <div class="lockup"><span class="name" style="color:#FFFFFF">ORBI<span class="lo" style="color:#2557D6;font-weight:800">APP</span></span></div>
+        <p class="tag" style="color:#999999">Assinatura em alto contraste sobre superfície Preto Carbono (#0A0A0A).</p>
+        <span class="mono" style="color:#666666">Accent lockup · Dark</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="foot">
+    <span>Orbi Design System · Minimal Blue & Monochrome</span>
+    <span>design/brand-book-a4.pdf · see design/design-system.html</span>
+  </div>
+</div>
+</body>
+</html>

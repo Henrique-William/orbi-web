@@ -8,7 +8,6 @@ import PageFrame, { RefreshButton } from '@/components/Shell';
 import { Icon } from '@/components/Icon';
 import { HealthDot, RouteFlags, StatusBadge, Progress, Empty, usePageState } from '@/components/common';
 import GeoMap from '@/components/maps/GeoMap';
-import LiveMap from '@/components/maps/LiveMap';
 import { priorityModal } from '@/components/modals';
 import { useOrbi } from '@/lib/orbi/useOrbi';
 import { toast } from '@/lib/orbi/ui';
@@ -23,8 +22,7 @@ export default function LivePage() {
   const rs = P.S.routes.filter((r: any) => P.isToday(r) && r.status !== 'COMPLETED');
   const attn = (r: any) => P.health(r).worst !== 'ok';
   const FL: [string, string, number][] = [['ALL', 'Todas', rs.length], ['IN_PROGRESS', 'Em andamento', rs.filter((r: any) => r.status === 'IN_PROGRESS').length], ['LATE', 'Atenção', rs.filter(attn).length]];
-  if (!P.API) FL.push(['SOS', 'SOS', rs.filter((r: any) => P.hasSos(r.id)).length]);
-  const list = rs.filter((r: any) => st.filter === 'ALL' || (st.filter === 'IN_PROGRESS' && r.status === 'IN_PROGRESS') || (st.filter === 'LATE' && attn(r)) || (st.filter === 'SOS' && P.hasSos(r.id)));
+  const list = rs.filter((r: any) => st.filter === 'ALL' || (st.filter === 'IN_PROGRESS' && r.status === 'IN_PROGRESS') || (st.filter === 'LATE' && attn(r)));
   const f = st.focus && P.route(st.focus);
   const fullscreen = () => {
     const w = wrap.current; if (!w) return;
@@ -34,13 +32,13 @@ export default function LivePage() {
   };
 
   return (
-    <PageFrame active="live" title="Ao vivo" sub={P.API ? 'Rotas e paradas da Orbi API, atualizadas automaticamente' : 'Posição estimada da frota em tempo real'}>
+    <PageFrame active="live" title="Ao vivo" sub="Rotas e entregas da frota em tempo real via Orbi API">
       <div className="live" ref={wrap}>
         <section className="live-map card pad0">
           <GeoMap P={P} routes={rs} keep={keep} focus={st.focus} onPick={id => set({ focus: id })} />
           <div className="live-top"><span className="live-dot" /><b>{rs.filter((r: any) => r.status === 'IN_PROGRESS').length} em rota</b>
-            <span className="muted small">{P.API ? `${P.autoRefresh() ? `atualiza a cada ${P.autoRefresh()} s` : 'atualização manual'} · posição = última parada registrada` : 'atualiza a cada segundo'}</span>
-            {P.API && <RefreshButton P={P} label />}
+            <span className="muted small">{P.autoRefresh() ? `atualiza a cada ${P.autoRefresh()} s` : 'atualização sob demanda'} · posição da frota</span>
+            <RefreshButton P={P} label />
             <button className="btn sm ghost" onClick={fullscreen}><Icon name="expand" size="sm" /> Tela cheia</button></div>
         </section>
         <aside className="live-side">

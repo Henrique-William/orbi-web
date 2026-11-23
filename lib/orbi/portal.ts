@@ -23,8 +23,8 @@ const SKEY = 'orbi-portal-session';                // sessão própria do portal
 function createPortal() {
   const P: any = {};
   P.D = D; P.M = M; P.CFG = CONFIG;
-  P.mode = resolveMode();
-  P.API = false;
+  P.mode = 'api';
+  P.API = true;
   P.features = { all: true };
   P.toast = toast;
   P.sync = { state: 'ok', last: new Date().toISOString(), error: null, waking: false, flash: false };
@@ -334,7 +334,7 @@ function createPortal() {
   const ROUTE_COLORS = ['#2557D6', '#C2417A', '#14857A', '#6E56CF', '#D9622B', '#3E8EDE', '#5E8C31', '#A86B12'];
   P.routeColor = (r: any) => ROUTE_COLORS[Math.max(0, P.S.routes.indexOf(r)) % ROUTE_COLORS.length];
 
-  if (P.mode === 'api') enableApi(P);
+  enableApi(P);
   return P;
 }
 

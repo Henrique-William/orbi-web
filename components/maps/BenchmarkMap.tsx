@@ -5,7 +5,7 @@
  * Layout organizado em 2 painéis: mapa à esquerda e legenda interativa dedicada à direita.
  */
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useIsDarkMode, GOOGLE_MAPS_DARK_STYLE } from './mapTheme';
+import { useIsDarkMode, GOOGLE_MAPS_DARK_STYLE, GOOGLE_MAPS_LIGHT_STYLE } from './mapTheme';
 
 export interface RoutePoint {
   order: number;
@@ -189,7 +189,7 @@ export default function BenchmarkMap({
           streetViewControl: false,
           mapTypeControl: false,
           fullscreenControl: true,
-          styles: isDark ? GOOGLE_MAPS_DARK_STYLE : []
+          styles: isDark ? GOOGLE_MAPS_DARK_STYLE : GOOGLE_MAPS_LIGHT_STYLE
         });
 
         gMapRef.current = map;
@@ -212,7 +212,7 @@ export default function BenchmarkMap({
   useEffect(() => {
     if (gMapRef.current) {
       gMapRef.current.setOptions({
-        styles: isDark ? GOOGLE_MAPS_DARK_STYLE : []
+        styles: isDark ? GOOGLE_MAPS_DARK_STYLE : GOOGLE_MAPS_LIGHT_STYLE
       });
     }
   }, [isDark]);

@@ -5,7 +5,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { esc, initials, TERMINAL } from '@/lib/orbi/format';
-import { useIsDarkMode, GOOGLE_MAPS_DARK_STYLE } from './mapTheme';
+import { useIsDarkMode, GOOGLE_MAPS_DARK_STYLE, GOOGLE_MAPS_LIGHT_STYLE } from './mapTheme';
 
 type Props = {
   P: any;
@@ -380,7 +380,7 @@ export default function GeoMap({
             position: google.maps.ControlPosition.RIGHT_TOP
           },
           internalUsageAttributionIds: ['gmp_git_agentskills_v1'],
-          styles: isDark ? GOOGLE_MAPS_DARK_STYLE : []
+          styles: isDark ? GOOGLE_MAPS_DARK_STYLE : GOOGLE_MAPS_LIGHT_STYLE
         });
 
         const infoWindow = new google.maps.InfoWindow();
@@ -453,7 +453,7 @@ export default function GeoMap({
   useEffect(() => {
     if (gState.current.map) {
       gState.current.map.setOptions({
-        styles: isDark ? GOOGLE_MAPS_DARK_STYLE : []
+        styles: isDark ? GOOGLE_MAPS_DARK_STYLE : GOOGLE_MAPS_LIGHT_STYLE
       });
     }
   }, [isDark]);

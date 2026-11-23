@@ -6,88 +6,55 @@
 import { useEffect, useState } from 'react';
 
 /**
+ * Estilos oficiais de Modo Claro (Light Mode) Monocromático para Google Maps Platform (Brand Book Orbi).
+ * Fundo off-white suave (#F7F7F5), vias brancas (#FFFFFF) e traçado em destaque Azul Orbi (#2557D6).
+ */
+export const GOOGLE_MAPS_LIGHT_STYLE: any[] = [
+  { elementType: 'geometry', stylers: [{ color: '#f7f7f5' }] },
+  { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#666666' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#f7f7f5' }, { weight: 2 }] },
+  { featureType: 'administrative', elementType: 'geometry.stroke', stylers: [{ color: '#e5e5e3' }] },
+  { featureType: 'administrative.land_parcel', elementType: 'labels.text.fill', stylers: [{ color: '#999999' }] },
+  { featureType: 'poi', stylers: [{ visibility: 'simplified' }] },
+  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#f0f0ee' }] },
+  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#777777' }] },
+  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#eef3eb' }] },
+  { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#557755' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#e5e5e3' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#444444' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#d8d8d4' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#f0f0ee' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#e2e8f0' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#8898aa' }] }
+];
+
+/**
  * Estilos oficiais de Modo Escuro (Dark Mode) para Google Maps Platform.
- * Otimizado para visualização noturna de frotas, contraste de rotas e legibilidade de ruas.
+ * Otimizado para visualização noturna em Preto Carbono (#0A0A0A) de alto contraste.
  */
 export const GOOGLE_MAPS_DARK_STYLE: any[] = [
-  { elementType: 'geometry', stylers: [{ color: '#1a1f2c' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#1a1f2c' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#8f9bb3' }] },
-  {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#c5d1e8' }]
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#8f9bb3' }]
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry',
-    stylers: [{ color: '#152422' }]
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#528265' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry',
-    stylers: [{ color: '#273144' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#1c2433' }]
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#a0aec0' }]
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [{ color: '#31405e' }]
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry.stroke',
-    stylers: [{ color: '#1e283b' }]
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#e2e8f0' }]
-  },
-  {
-    featureType: 'transit',
-    elementType: 'geometry',
-    stylers: [{ color: '#20293a' }]
-  },
-  {
-    featureType: 'transit.station',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#8f9bb3' }]
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [{ color: '#0f172a' }]
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [{ color: '#475569' }]
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.stroke',
-    stylers: [{ color: '#0f172a' }]
-  }
+  { elementType: 'geometry', stylers: [{ color: '#0a0a0a' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#0a0a0a' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#888888' }] },
+  { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#cccccc' }] },
+  { featureType: 'poi', stylers: [{ visibility: 'simplified' }] },
+  { featureType: 'poi', elementType: 'labels.text.fill', stylers: [{ color: '#777777' }] },
+  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#111914' }] },
+  { featureType: 'poi.park', elementType: 'labels.text.fill', stylers: [{ color: '#447755' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#161616' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#242424' }] },
+  { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#888888' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#1f1f1f' }] },
+  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#2c2c2c' }] },
+  { featureType: 'road.highway', elementType: 'labels.text.fill', stylers: [{ color: '#bbbbbb' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#141414' }] },
+  { featureType: 'transit.station', elementType: 'labels.text.fill', stylers: [{ color: '#777777' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#0d131f' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#475569' }] },
+  { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{ color: '#0d131f' }] }
 ];
 
 /**

@@ -60,9 +60,7 @@ export default function ReportsPage() {
       <div className="kpi-grid k6">
         <Kpi label="Entregas" color={COLORS.ok} value={num(del)} sub={`${num(stops)} paradas`} spark={days.map((d: any) => d.delivered)} />
         <Kpi label="Taxa de sucesso" color={COLORS.blue} value={avgSucc + '%'} sub={`meta ${goals.successRate}%`} spark={success} />
-        {P.API
-          ? <Kpi label="Ocorrências" color={COLORS.violet} value={num(sum('skipped') + sum('cancelled'))} sub={`${sum('skipped')} puladas · ${sum('cancelled')} canceladas`} />
-          : <Kpi label="Pontualidade" color={COLORS.violet} value={onTime + '%'} sub={`meta ${goals.onTime}%`} />}
+        <Kpi label="Ocorrências" color={COLORS.violet} value={num(sum('skipped') + sum('cancelled'))} sub={`${sum('skipped')} puladas · ${sum('cancelled')} canceladas`} />
         <Kpi label="Rotas" color={COLORS.sky} value={num(routes)} sub={`${num(routes / days.length, 1)} por dia`} />
         <Kpi label="Distância" color={COLORS.teal} value={<>{num(kmv, 0)}<Of> km</Of></>} sub={`${num(kmv / Math.max(1, del), 1)} km por entrega`} />
         <Kpi label="Custo estimado" color={COLORS.skip} value={money(cost)} sub={`${money(cost / Math.max(1, del))} por entrega`} />
@@ -84,17 +82,15 @@ export default function ReportsPage() {
         <section className="card"><div className="card-head"><h3>Entregas por dia da semana e horário</h3></div><Heat rows={WD} cols={HRS} matrix={heat} /></section>
       </div>
       <section className="card pad0"><div className="card-head pad"><h3>Desempenho por motorista</h3><span className="muted small">período selecionado, sem o dia de hoje</span></div>
-        <table className="tbl"><thead><tr><th>Motorista</th><th>Rotas</th><th>Entregas</th><th>Sucesso</th>{!P.API && <th>Pontualidade</th>}<th>Km</th><th>Custo/entrega</th>{!P.API && <th>Avaliação</th>}</tr></thead>
+        <table className="tbl"><thead><tr><th>Motorista</th><th>Rotas</th><th>Entregas</th><th>Sucesso</th><th>Km</th><th>Custo/entrega</th></tr></thead>
           <tbody>{drows.map((x: any) => (
             <tr key={x.d.id} onClick={() => router.push('/drivers/' + x.d.id)}>
               <td data-l="Motorista"><span className="who"><span className="avatar xs">{initials(x.d.name)}</span>{x.d.name}</span></td><td data-l="Rotas">{x.routes}</td><td data-l="Entregas">{x.delivered}</td>
               <td data-l="Sucesso"><span className="prog-cell"><Progress value={x.success} tone={x.success >= goals.successRate ? 'green' : 'amber'} /><small>{x.success}%</small></span></td>
-              {!P.API && <td data-l="Pontualidade">{x.onTime}%</td>}
               <td data-l="Km">{num(x.km, 0)}</td><td data-l="Custo/entrega">{money((x.km * 1.85 + x.stops * 2.5) / Math.max(1, x.delivered))}</td>
-              {!P.API && <td data-l="Avaliação">{num(x.rating, 1)}</td>}
             </tr>
           ))}</tbody></table></section>
-      <p className="muted small center" style={{ margin: '16px 0 4px' }}>{P.API ? 'Dados reais da Orbi API (os mesmos do app do motorista). Distâncias estimadas pelas coordenadas das entregas.' : 'Dias anteriores: histórico simulado para demonstração. Hoje: dados do app.'}</p>
+      <p className="muted small center" style={{ margin: '16px 0 4px' }}>Dados consolidados da Orbi API. Distâncias estimadas pelas coordenadas das entregas.</p>
     </PageFrame>
   );
 }
