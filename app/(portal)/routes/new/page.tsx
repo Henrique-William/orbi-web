@@ -38,6 +38,7 @@ function DriverPicker({ P, value, onPick, sub }: { P: any; value: any; onPick: (
 // Modo API
 // ---------------------------------------------------------------------------
 type ApiDraft = {
+  name: string;
   stops: { address: string; lat: number; lng: number; email: string }[];
   driverId: any;
   chosen: { lat: number; lng: number } | null;
@@ -63,6 +64,7 @@ type FormErrors = {
 };
 
 const newApiDraft = (): ApiDraft => ({
+  name: '',
   stops: [],
   driverId: null,
   chosen: null,
@@ -120,7 +122,7 @@ function NewRouteApi({ P }: { P: any }) {
   const est = n ? 1 + n * 3 : 0;
   const pseudo = {
     id: 'novo',
-    code: 'Nova rota',
+    code: draft.name ? draft.name.trim() : 'Nova rota',
     status: 'CREATED',
     stops: draft.stops.map((s, i) => ({
       id: 'n' + i,
@@ -447,7 +449,7 @@ function NewRouteApi({ P }: { P: any }) {
     setCreating(true);
     const before = new Set(P.S.routes.map((r: any) => r.id));
     try {
-      await P.act.createRouteApi(draft.stops, draft.driverId);
+      await P.act.createRouteApi(draft.stops, draft.driverId, draft.name);
       const created = P.S.routes.find((r: any) => !before.has(r.id));
       const clean = newApiDraft();
       drafts.api = clean;
@@ -759,7 +761,20 @@ function NewRouteApi({ P }: { P: any }) {
             />
           </section>
           <section className="card">
-            <div className="card-head"><h3>2. Motorista</h3></div>
+            <div className="card-head"><h3>2. Identificação e Motorista</h3></div>
+            <div style={{ marginBottom: 14 }}>
+              <label className="lbl" htmlFor="routeName" style={{ marginTop: 0 }}>Nome da rota (opcional)</label>
+              <div className="input">
+                <Icon name="route" size="sm" />
+                <input
+                  id="routeName"
+                  placeholder="Ex.: Rota Centro - Manhã (padrão: automático)"
+                  value={draft.name}
+                  onChange={e => setDraft({ name: e.target.value })}
+                />
+              </div>
+            </div>
+            <label className="lbl">Motorista</label>
             <DriverPicker P={P} value={draft.driverId} onPick={id => setDraft({ driverId: id })} sub={d => d.phone || d.email || ''} />
             <div className="callout amber"><Icon name="info" size="sm" /><span>Ao criar, a Orbi API <b>otimiza a ordem</b> das paradas usando o <b>OpenRouteService</b>, que tem cota gratuita{n ? ` (estimativa: até ~${est} chamadas para ${n} paradas)` : ''}.</span></div>
             <button className="btn success block lg" disabled={n < 2 || creating} onClick={create}>{creating ? <><Icon name="refresh" size="sm spin" /> Criando e otimizando…</> : <><Icon name="check" size="sm" /> Criar rota na Orbi API</>}</button>
@@ -773,8 +788,8 @@ function NewRouteApi({ P }: { P: any }) {
 // ---------------------------------------------------------------------------
 // Modo demonstração
 // ---------------------------------------------------------------------------
-type DemoDraft = { stops: any[]; optimized: any[] | null; before: number; after: number; driverId: any; window: string };
-const newDemoDraft = (): DemoDraft => ({ stops: [], optimized: null, before: 0, after: 0, driverId: null, window: '08:00 – 12:00' });
+type DemoDraft = { name: string; stops: any[]; optimized: any[] | null; before: number; after: number; driverId: any; window: string };
+const newDemoDraft = (): DemoDraft => ({ name: '', stops: [], optimized: null, before: 0, after: 0, driverId: null, window: '08:00 – 12:00' });
 const WINDOWS = ['08:00 – 12:00', '13:00 – 17:00', '14:00 – 18:00', '18:00 – 21:00'];
 
 function NewRouteDemo({ P }: { P: any }) {
@@ -813,7 +828,7 @@ function NewRouteDemo({ P }: { P: any }) {
     }, 800);
   };
   const create = () => {
-    const r = P.act.createRoute(draft.optimized || draft.stops, draft.driverId, draft.window);
+    const r = P.act.createRoute(draft.optimized || draft.stops, draft.driverId, draft.window, draft.name);
     const clean = newDemoDraft();
     drafts.demo = clean;
     setDraftState(clean);
@@ -853,14 +868,29 @@ function NewRouteDemo({ P }: { P: any }) {
         </section>
         <div className="stack">
           <section className="card pad0"><div className="card-head pad"><h3>2. Otimização</h3>{list.length > 0 && <span className="muted small">{list.length} paradas · {km(M.totalDistance(D.DEPOT, list))}</span>}</div>
-            <GeoMap P={P} routes={[{ id: 'demo-novo', code: 'Nova rota', status: 'CREATED', stops: list }]} scrollZoom />
+            <GeoMap P={P} routes={[{ id: 'demo-novo', code: draft.name ? draft.name.trim() : 'Nova rota', status: 'CREATED', stops: list }]} scrollZoom />
             <div className="pad">
               {draft.optimized && <div className="compare"><div><span>Ordem original</span><b>{km(draft.before)}</b></div><div className="better"><span>Otimizada</span><b>{km(draft.after)}</b><small>−{Math.max(0, Math.round((1 - draft.after / draft.before) * 100))}% · ~{fmtMin(M.unitsToMin(draft.after))}</small></div></div>}
               <button className="btn primary block" disabled={draft.stops.length < 2 || optimizing} onClick={optimize}>{optimizing ? <><Icon name="refresh" size="sm spin" /> Otimizando…</> : <><Icon name="sparkle" size="sm" /> {draft.optimized ? 'Otimizar de novo' : 'Otimizar ordem das paradas'}</>}</button>
               <p className="muted small" style={{ margin: '8px 0 0' }}>Simulação local. No sistema real: <code>POST /api/route/optimize</code> (OpenRouteService). Nenhuma requisição é feita aqui.</p>
             </div></section>
-          <section className="card"><div className="card-head"><h3>3. Motorista e janela</h3></div>
+          <section className="card">
+            <div className="card-head"><h3>3. Identificação, motorista e janela</h3></div>
+            <div style={{ marginBottom: 14 }}>
+              <label className="lbl" htmlFor="demoRouteName" style={{ marginTop: 0 }}>Nome da rota (opcional)</label>
+              <div className="input">
+                <Icon name="route" size="sm" />
+                <input
+                  id="demoRouteName"
+                  placeholder="Ex.: Rota Centro - Manhã (padrão: automático)"
+                  value={draft.name}
+                  onChange={e => setDraft({ name: e.target.value })}
+                />
+              </div>
+            </div>
+            <label className="lbl">Janela de entrega</label>
             <div className="chips wrap">{WINDOWS.map(w => <button key={w} className={`chip ${draft.window === w ? 'on' : ''}`} onClick={() => setDraft({ window: w })}>{w}</button>)}</div>
+            <label className="lbl" style={{ marginTop: 12 }}>Motorista</label>
             <DriverPicker P={P} value={draft.driverId} onPick={id => setDraft({ driverId: id })} sub={d => d.vehicle} />
             <button className="btn success block lg" style={{ marginTop: 14 }} disabled={draft.stops.length < 2} onClick={create}><Icon name="check" size="sm" /> Criar rota</button>
           </section>

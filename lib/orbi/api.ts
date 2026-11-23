@@ -373,10 +373,11 @@ export function enableApi(P: any) {
   }
   P.act = Object.assign({}, P.act, {
     assign: (rid: any, did: any) => run(() => request('PATCH', `/route/${routeApiId(rid)}/assign-driver`, { driverId: did }), 'Motorista atribuído · o app recebe na próxima atualização'),
+    updateRouteName: (rid: any, name: string) => run(() => request('PATCH', `/route/${routeApiId(rid)}`, { name }), 'Nome da rota atualizado'),
     cancelRoute: (rid: any) => run(() => request('PATCH', `/route/${routeApiId(rid)}/cancel`, {}), 'Rota cancelada'),
     deleteRoute: (rid: any) => run(() => request('DELETE', `/route/${routeApiId(rid)}`), 'Rota excluída'),
-    createRouteApi: async (stops: any[], driverId: any) => {
-      const body = { driverId: driverId || null, locations: stops.map(s => ({ address: s.address, latitude: s.lat, longitude: s.lng, recipientEmail: s.email || null })) };
+    createRouteApi: async (stops: any[], driverId: any, name?: string) => {
+      const body = { name: name || null, driverId: driverId || null, locations: stops.map(s => ({ address: s.address, latitude: s.lat, longitude: s.lng, recipientEmail: s.email || null })) };
       const res = await request('POST', '/route/optimize', body, { retries: 1, timeout: 120000 });
       await P.syncNow(true);
       return res;

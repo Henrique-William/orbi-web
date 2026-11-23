@@ -9,7 +9,7 @@ import { Icon } from '@/components/Icon';
 import { RouteFlags, StatusBadge } from '@/components/common';
 import GeoMap from '@/components/maps/GeoMap';
 import { RouteSvg } from '@/components/maps/LiveMap';
-import { stopModal, assignModal, priorityModal, incidentModal } from '@/components/modals';
+import { stopModal, assignModal, priorityModal, incidentModal, editRouteNameModal } from '@/components/modals';
 import { useOrbi } from '@/lib/orbi/useOrbi';
 import { confirmDialog, downloadCSV, toast } from '@/lib/orbi/ui';
 import { num, money, rel, hhmm, date, fmtMin, pad2, ROUTE_STATUS, STOP_STATUS, PRIORITY, OWNERSHIP } from '@/lib/orbi/format';
@@ -49,8 +49,17 @@ export default function RoutePage() {
     <PageFrame active="routes" title={`Rota ${r.code}`} path={[{ href: '/routes', label: 'Rotas' }]} noHead>
       <div className="page-head">
         <Link className="icon-btn" href="/routes" aria-label="Voltar"><Icon name="back" /></Link>
-        <div className="ph-main"><h2>{r.code}</h2><span className="row wrap" style={{ gap: 6 }}><StatusBadge map={ROUTE_STATUS} st={r.status} /><RouteFlags P={P} r={r} /></span></div>
+        <div className="ph-main">
+          <div className="row wrap align-center" style={{ gap: 8 }}>
+            <h2>{r.code}</h2>
+            <button className="icon-btn sm" aria-label="Editar nome da rota" data-tip="Editar nome da rota" onClick={() => editRouteNameModal(P, r)}>
+              <Icon name="edit" size="sm" />
+            </button>
+          </div>
+          <span className="row wrap" style={{ gap: 6 }}><StatusBadge map={ROUTE_STATUS} st={r.status} /><RouteFlags P={P} r={r} /></span>
+        </div>
         <div className="row wrap ph-actions">
+          <button className="btn ghost" onClick={() => editRouteNameModal(P, r)}><Icon name="edit" size="sm" /> Renomear</button>
           {!P.API && <>
             <button className="btn ghost" disabled={!d || r.status === 'COMPLETED'} onClick={() => priorityModal(P, r)}><Icon name="zap" size="sm" /> Prioridade</button>
             <Link className={`btn ghost ${d ? '' : 'disabled'}`} href={'/messages/' + r.id}><Icon name="chat" size="sm" /> Mensagem{unread ? <> <em className="pill-n">{unread}</em></> : null}</Link>

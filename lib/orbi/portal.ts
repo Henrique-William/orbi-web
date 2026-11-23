@@ -282,10 +282,24 @@ function createPortal() {
       });
     },
     deleteRoute(rid: any) { P.mutate((S: any) => { S.routes = S.routes.filter((r: any) => r.id !== rid); (S.deletedRoutes = S.deletedRoutes || []).push(rid); }); return Promise.resolve(true); },
-    createRoute(stops: any[], driverId: any, win: string) {
+    updateRouteName(rid: any, name: string) {
+      P.mutate((S: any) => {
+        const r = S.routes.find((x: any) => x.id === rid);
+        if (r) {
+          r.name = name ? name.trim() : null;
+          r.code = r.name || ('RT-' + r.id.replace(/\D/g, ''));
+        }
+      });
+      return Promise.resolve(true);
+    },
+    createRoute(stops: any[], driverId: any, win: string, name?: string) {
       return P.mutate((S: any) => {
-        const id = 'r' + S.routeCounter; const code = 'RT-' + S.routeCounter; S.routeCounter++;
-        const r = { id, code, driverId: driverId || null, status: driverId ? 'ASSIGNED' : 'CREATED', window: win, createdAt: new Date().toISOString(), startedAt: null, finishedAt: null, stops };
+        const id = 'r' + S.routeCounter;
+        const defaultCode = 'RT-' + S.routeCounter;
+        S.routeCounter++;
+        const routeName = name && name.trim() ? name.trim() : null;
+        const code = routeName || defaultCode;
+        const r = { id, code, name: routeName, driverId: driverId || null, status: driverId ? 'ASSIGNED' : 'CREATED', window: win, createdAt: new Date().toISOString(), startedAt: null, finishedAt: null, stops };
         S.routes.unshift(r);
         if (driverId) notify(S, driverId, 'Nova rota atribuída', `A rota ${code} foi atribuída a você (${win}).`, '#/d/route/' + id);
         return r;

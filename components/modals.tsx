@@ -256,6 +256,60 @@ function VehicleBody({ id, close }: { id: string; close: () => void }) {
   );
 }
 
+// ---------------------------------------------------------------------------
+// Editar nome da rota
+// ---------------------------------------------------------------------------
+export function editRouteNameModal(P: any, r: any) {
+  openModal(`Editar nome da rota · ${r.code}`, close => <EditRouteNameBody r={r} close={close} />);
+}
+function EditRouteNameBody({ r, close }: { r: any; close: () => void }) {
+  const P = useOrbi();
+  const [name, setName] = useState(r.name || r.code || '');
+  const [saving, setSaving] = useState(false);
+  const [err, setErr] = useState('');
+
+  const save = async () => {
+    const val = name.trim();
+    setSaving(true);
+    setErr('');
+    try {
+      await P.act.updateRouteName(r.id, val);
+      close();
+    } catch (e: any) {
+      setErr(e.message || 'Erro ao atualizar o nome da rota');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <>
+      <label className="lbl" htmlFor="rnInput">Nome da rota</label>
+      <div className={`input ${err ? 'err' : ''}`}>
+        <Icon name="route" size="sm" />
+        <input
+          id="rnInput"
+          placeholder="Ex.: Rota Centro - Manhã (vazio para usar o código padrão)"
+          value={name}
+          onChange={e => { setName(e.target.value); if (err) setErr(''); }}
+          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); save(); } }}
+          autoFocus
+        />
+      </div>
+      {err && <div className="ferr" style={{ marginTop: 4 }}>{err}</div>}
+      <p className="muted small" style={{ marginTop: 8 }}>
+        Se deixado em branco, a rota exibirá o código padrão do sistema ({r.id ? `ROTA-${String(r.id).slice(-4)}` : 'código automático'}).
+      </p>
+      <div className="row end" style={{ marginTop: 16 }}>
+        <button className="btn ghost" onClick={close} disabled={saving}>Cancelar</button>
+        <button className="btn primary" onClick={save} disabled={saving}>
+          {saving ? <><Icon name="refresh" size="xs spin" /> Salvando…</> : 'Salvar nome'}
+        </button>
+      </div>
+    </>
+  );
+}
+
 /** Abre a ação certa para cada tipo de ocorrência. */
 export function openOccurrence(P: any, o: any, router: any) {
   if (o.kind === 'SOS') incidentModal(P, o.ref);
